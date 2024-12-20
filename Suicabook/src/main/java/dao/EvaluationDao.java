@@ -32,13 +32,46 @@ private Connection connection;
 			pstatement.setString(1,evaluation_id);
 			rs = pstatement.executeQuery();
 			if(rs.next()) {
-				bean.setId(rs.getInt("user_id"));
-				bean.setName(rs.getString("user_name"));
-				bean.setPassword(rs.getString("user_pass"));
+				bean.setId(rs.getInt("evaluation_id"));
+				bean.setEvaluation_score(rs.getString("evaluation_score"));
+				bean.setEvaluation_review(rs.getString("evaluation_review"));
+				bean.setBook_id(rs.getString("book_id"));
+				bean.setImg(rs.getString("book_cover"));
+				bean.setTitle(rs.getString("book_title"));		
 			}
 		}finally {
 			pstatement.close();
 		}
 		return bean;
 	}
+	
+	//新規登録された行数を返すメソッド
+	public int insertEvaluation(EvaluationBean eval) throws SQLException{
+		int numRow=0;
+		PreparedStatement pstatement = null;
+		try {
+			// トランザクション開始
+			connection.setAutoCommit(false);
+			String sql = "insert into evaluation(user_id,book_id,evaluation_score,evaluation_review) values(?,?,?,?);";
+			pstatement = connection.prepareStatement(sql);
+			pstatement.setInt(1,eval.user_id);
+			pstatement.setInt(2,eval.book_id);
+			pstatement.setString(3,eval.evaluation_score);
+			pstatement.setString(4,eval.evaluation_review);
+			
+			numRow = pstatement.executeUpdate();
+			}
+		} finally {
+			if (numRow > 0) {
+				// 登録成功時はコミット
+				connection.commit();
+			} else {
+				// 登録失敗時はロールバック
+				connection.rollback();
+			}
+			// PreparedStatement オブジェクトの解
+			pstatement.close();
+		}
+		return numRow;
 	}
+}
