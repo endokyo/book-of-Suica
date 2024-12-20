@@ -11,9 +11,8 @@
 		<table>
 			<tr>
 				<td>
-					<form action="" method="get">
+					<form action="home" method="get">
 						<input type="submit" value="書籍一覧に戻る">
-						<imput type="hidden" name="button" value="backhome">
 					</form>
 				</td>
 				
@@ -22,20 +21,20 @@
 				</td>
 
 				<td>
-					<form action="" method="get">
+					<form action="personal" method="get">
 						<input type="submit" value="プロフィールボタン">
-						<imput type="hidden" name="button" value="prof">
 					</form>
 				</td>
 
 				<td>
-					<form action="" method="get">
+					<form action="login" method="post">
 						<input type="submit" value="ログアウト">
 						<imput type="hidden" name="button" value="logout">
 					</form>
 				</td>
 			</tr>
 		</table>
+		<br>
 	</main>
 </body>
 </html>
