@@ -36,7 +36,7 @@ package bean;
 		public void setCreated_at(Date created_at) {
 			this.created_at = created_at;
 		}
-		public int getUpdated_at() {
+		public Date getUpdated_at() {
 			return updated_at;
 		}
 		public void setUpdated_at(Date updated_at) {
