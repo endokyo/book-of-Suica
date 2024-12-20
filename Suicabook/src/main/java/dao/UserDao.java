@@ -51,25 +51,18 @@ private Connection connection;
 	}
 	
 	//新規登録された行数を返すメソッド
-	public int InsertUser(UserBean user) {
-		UserBean bean = new UserBean();
-		int numrow;
-		ResultSet rs = null;
+	public int InsertUser(UserBean user) throws SQLException,NumberFormatException{
+		int numrow = 0;
 		PreparedStatement pstatement = null;
 		try {
 			String sql = "insert into user(user_pass,user_name) values (?,?);";
 			pstatement = connection.prepareStatement(sql);
-			pstatement.setString(1,user_name);
-			rs = pstatement.executeQuery();
-			if(rs.next()) {
-				bean.setId(rs.getInt("user_id"));
-				bean.setName(rs.getString("user_name"));
-				bean.setPassword(rs.getString("user_pass"));
-			}
+			pstatement.setString(1,user.getPassword());
+			pstatement.setString(2,user.getName());
+			numrow = pstatement.executeUpdate();
 		}finally {
 			pstatement.close();
 		}
-		return bean;
+		return numrow;
 	}
-
 }
