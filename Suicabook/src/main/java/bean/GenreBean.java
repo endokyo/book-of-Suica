@@ -1,8 +1,8 @@
 package bean;
 
 public class GenreBean {
-	private int id;
-	private String genre;
+	private int id; //ジャンルIDを保持
+	private String genre; // ジャンル名を保持
 
 	public int getId() {
 		return id;

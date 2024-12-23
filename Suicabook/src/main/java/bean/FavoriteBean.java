@@ -5,9 +5,9 @@ package bean;
 
 
 	public class FavoriteBean implements Serializable {
-		private int favorite_id;
-		private int user_id;
-		private int book_id;
+		private int favorite_id; //お気に入り登録のIDを保持
+		private int user_id; //ユーザーのIDを保持
+		private int book_id; //書籍のIDを保持
 
 		public int getFavorite_id() {
 			return favorite_id;
