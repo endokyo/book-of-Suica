@@ -1,20 +1,22 @@
 package daotest;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import bean.BookBean;
-import dao.BookDao;
+import dao.FavoriteDao;
 
-public class SearchBookTest {
+public class FavoriteListTest {
 	public static void main(String[] args) {
-		BookDao dao = null;
+		FavoriteDao dao = null;
 		int id = Integer.parseInt(args[0]);
-		BookBean bean = null;
+		ArrayList<BookBean> list = null;
 		try {
-			dao = new BookDao();
+			dao = new FavoriteDao();
 
-			bean = dao.searchBook(id, id);
-			if (bean != null) {
+			list = dao.getFavoriteListSortByUser(id);
+			
+			for (BookBean bean : list) {
 				System.out.println("book_id：" + bean.getId());
 				System.out.println("book_cover：" + bean.getImg());
 				System.out.println("book_title：" + bean.getTitle());
@@ -25,16 +27,15 @@ public class SearchBookTest {
 				System.out.println("book_avecount：" + bean.getAvecount());
 				System.out.println("book_ave：" + bean.getAverage());
 				System.out.println("favorite：" + bean.isFavorite());
-			} else {
-				System.out.println("取得に失敗");
+				System.out.println("---------------------------------------------------");
 			}
-
+		} catch (ClassNotFoundException e) {
+			System.out.println("クラスの読み込みに失敗しました");
+			e.printStackTrace();
 		} catch (SQLException e) {
 			System.out.println("JDBCエラーです");
 			e.getMessage();
 			e.printStackTrace();
-		} catch (ClassNotFoundException e) {
-			System.out.println("クラスの読み込みに失敗しました");
 		} finally {
 			if (dao != null) {
 				dao.close();

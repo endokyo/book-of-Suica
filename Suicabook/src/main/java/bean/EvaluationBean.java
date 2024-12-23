@@ -3,14 +3,14 @@ package bean;
 import java.io.Serializable;
 
 public class EvaluationBean implements Serializable{
-	private int id;
-	private int user_id;
-	private String user_name;
-	private int evaluation_score;
-	private String evaluation_review;
-	private int book_id;
-	private String img;
-	private String title;
+	private int id; //評価のIDを保持
+	private int user_id; // 評価を行ったユーザーのIDを保持
+	private String user_name; //評価を行ったユーザーの名前を保持(詳細画面用)
+	private int evaluation_score; // 評価点を保持
+	private String evaluation_review; //評価のレビューを保持
+	private int book_id; // 評価を行った書籍のIDを保持
+	private String img; // 評価を行った書籍の表紙(ユーザー個人画面用)
+	private String title; // 評価を行った書籍のタイトルを保持(ユーザー個人画面用)
 	
 	public int getId() {
 		return id;

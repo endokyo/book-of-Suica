@@ -1,16 +1,16 @@
 package bean;
 
 public class BookBean {
-	private int id;
-	private String title;
-	private String img;
-	private String creater;
-	private String genre;
-	private int avecount;
-	private double average;
-	private int comcount;
-	private int favcount;
-	private boolean favorite;
+	private int id;	//書籍IDを保持
+	private String title; //書籍タイトルを保持
+	private String img; // 書籍表紙を保持
+	private String creater; //書籍の著者を保持
+	private String genre; //書籍ジャンルを保持
+	private int avecount; //評価を行った人数を保持
+	private double average; //評価の平均点を保持
+	private int comcount; //コメント数を保持
+	private int favcount; //お気に入り登録された回数を保持
+	private boolean favorite; //そのユーザーがお気に入り登録している書籍かどうかを保持
 	
 	public int getId() {
 		return id;

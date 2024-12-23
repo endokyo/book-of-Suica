@@ -49,7 +49,7 @@ public class TwintterDao {
 			
 			//SQLを発行し、抽出結果が格納されたResultSetオブジェクトを取得
 			rs = pstatement.executeQuery();
-			if(rs.next()) {
+			while(rs.next()) {
 				TwintterBean twintter = new TwintterBean();
 				twintter.setUser_id(rs.getInt("user_id"));
 				twintter.setTwintter_text(rs.getString("twintter_text"));

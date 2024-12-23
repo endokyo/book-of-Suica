@@ -36,13 +36,16 @@ private Connection connection;
 		ResultSet rs = null;
 		PreparedStatement pstatement = null;
 		try {
-			String sql = "SELECT * FROM genre WHWRE genre_id = ?;";
+			String sql = "SELECT * FROM genre WHERE genre_id = ?;";
 			pstatement = connection.prepareStatement(sql);
+			
 			pstatement.setInt(1,genre_id);
+			
 			rs = pstatement.executeQuery();
+			
 			if(rs.next()) {
-				bean.setId(rs.getInt("id"));
-				bean.setGenre(rs.getString("genre"));
+				bean.setId(rs.getInt("genre_id"));
+				bean.setGenre(rs.getString("genre_name"));
 			}
 		}finally {
 			pstatement.close();
@@ -51,7 +54,7 @@ private Connection connection;
 	}
 	
 	//ジャンル一覧を取得するメソッド
-	public ArrayList<GenreBean> createGenreList(String genre_id) throws SQLException{
+	public ArrayList<GenreBean> createGenreList() throws SQLException{
 		ArrayList<GenreBean> arrayGenre = new ArrayList<>();
 		PreparedStatement pstatement = null;
 		ResultSet rs = null;
@@ -67,7 +70,8 @@ private Connection connection;
 			while(rs.next()) {
 				GenreBean gb = new GenreBean();
 				//列名を指定してResultSetオブジェクトから値を取得
-				gb.setGenre(rs.getString("genre"));
+				gb.setId(rs.getInt("genre_id"));
+				gb.setGenre(rs.getString("genre_name"));
 				arrayGenre.add(gb);
 			}
 			//ResultSetオブジェクトの解放
