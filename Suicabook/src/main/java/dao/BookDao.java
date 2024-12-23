@@ -35,18 +35,20 @@ public class BookDao {
 	}
 
 	//book_idをもとにデータベースからデータを取得し空のBookBeanに入れ、返すメソッド
-	public BookBean searchBook(int book_id) throws SQLException {
+	public BookBean searchBook(int book_id, int userid) throws SQLException {
 		BookBean bb = new BookBean();
 		PreparedStatement pstatement = null;
 		ResultSet rs = null;
 
 		try {
 			//SQLを保持するPreparedStatementオブジェクトの生成
-			String sql = "SELECT * FROM book WHERE book_id = ?;"; //書籍用に書き換える
+			String sql = "SELECT * FROM book LEFT JOIN favorite ON book.book_id = favorite.book_id AND favorite.user_id = ? JOIN genre ON book.genre_id = genre.genre_id WHERE book.book_id = ?;";
+
 			pstatement = connection.prepareStatement(sql);
 
 			//INパラメータの設定
-			pstatement.setInt(1, book_id);
+			pstatement.setInt(1, userid);
+			pstatement.setInt(2, book_id);
 
 			//SQLを発行し、抽出結果が格納されたResultSetオブジェクトを取得
 			rs = pstatement.executeQuery();
@@ -54,14 +56,20 @@ public class BookDao {
 				//列名を指定してResultSetオブジェクトから値を取得
 				bb.setId(rs.getInt("book_id"));
 				bb.setTitle(rs.getString("book_title"));
-				bb.setImg(rs.getString("book_img"));
+				bb.setImg(rs.getString("book_cover"));
 				bb.setCreater(rs.getString("book_creater"));
-				bb.setGenre(rs.getString("book_genre"));
-				bb.setAvecount(rs.getInt("avecount"));
-				bb.setAverage(rs.getDouble("average"));
-				bb.setComcount(rs.getInt("twicount")); //bb.setTwicountに変更
-				bb.setFavcount(rs.getInt("favcount"));
-				bb.setFavorite(rs.getBoolean("favorite"));
+				bb.setGenre(rs.getString("genre_name"));
+				bb.setAvecount(rs.getInt("book_avecount"));
+				bb.setAverage(rs.getDouble("book_ave"));
+				bb.setComcount(rs.getInt("book_twicount")); //bb.setTwicountに変更
+				bb.setFavcount(rs.getInt("book_favcount"));
+				int i = rs.getInt("favorite_id");
+				System.out.println(i);
+				if (i > 0) {
+					bb.setFavorite(true);
+				} else {
+					bb.setFavorite(false);
+				}
 			}
 			//ResultSetオブジェクトの解放
 			rs.close();
