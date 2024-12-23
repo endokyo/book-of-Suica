@@ -8,7 +8,7 @@ public class BookBean {
 	private String genre; //書籍ジャンルを保持
 	private int avecount; //評価を行った人数を保持
 	private double average; //評価の平均点を保持
-	private int comcount; //コメント数を保持
+	private int twicount; //コメント数を保持
 	private int favcount; //お気に入り登録された回数を保持
 	private boolean favorite; //そのユーザーがお気に入り登録している書籍かどうかを保持
 	
@@ -54,11 +54,11 @@ public class BookBean {
 	public void setAverage(double average) {
 		this.average = average;
 	}
-	public int getComcount() {
-		return comcount;
+	public int getTwicount() {
+		return twicount;
 	}
-	public void setComcount(int comcount) {
-		this.comcount = comcount;
+	public void setTwicount(int comcount) {
+		this.twicount = comcount;
 	}
 	public int getFavcount() {
 		return favcount;
