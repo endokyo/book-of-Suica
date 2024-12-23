@@ -83,17 +83,78 @@ public class FavoriteDao {
 			rs = pstatement.executeQuery();
 			
 			while (rs.next()) {
-				BookBean bean = new BookBean();
-				bean.setId(rs.getInt("book_id"));
-				bean.setImg(rs.getString("book_cover"));
-				bean.setTitle(rs.getString("book_title"));
-				bean.setCreater(rs.getString("book_creater"));
-				bean.setGenre(rs.getString("genre_name"));
-				bean.setAverage(rs.getDouble("book_ave"));
+				BookBean bookbean = new BookBean();
+				bookbean.setId(rs.getInt("book_id"));
+				bookbean.setImg(rs.getString("book_cover"));
+				bookbean.setTitle(rs.getString("book_title"));
+				bookbean.setCreater(rs.getString("book_creater"));
+				bookbean.setGenre(rs.getString("genre_name"));
+				bookbean.setAverage(rs.getDouble("book_ave"));
+				bookbean.setAvecount(rs.getInt("book_avecount"));
+				bookbean.setComcount(rs.getInt("book_comcount"));
+				bookbean.setFavcount(rs.getInt("book_favcount"));
+				bookbean.setFavorite(true);
+				list.add(bookbean);
 			}
 		}finally {
 			pstatement.close();
 		}
 		return list;
+	}
+	
+	public int insertFavorite(FavoriteBean favorite) throws SQLException{
+		PreparedStatement pstatement = null;
+		ResultSet rs = null;
+		int numRow = 0;
+		
+		try {
+			//トランザクション開始
+			connection.setAutoCommit(false);
+			//SQLを保持するPreparedStatementオブジェクトの生成
+			String sql = "INSERT INTO favorite(user_id,book_id) values (?,?);";
+			pstatement = connection.prepareStatement(sql);
+
+			//INパラメータの設定
+			pstatement.setInt(1, favorite.getUser_id());
+			pstatement.setInt(2, favorite.getBook_id());
+			
+			//登録を実行
+			numRow = pstatement.executeUpdate();
+		}finally {
+			if(numRow > 0) {
+				connection.commit();
+			}else {
+				connection.rollback();
+			}
+		}
+		return numRow;
+		
+	}
+	
+	public int deleteFavorite(FavoriteBean favorite) throws SQLException{
+		PreparedStatement pstatement = null;
+		int numRow = 0;
+		
+		try {
+			//トランザクション開始
+			connection.setAutoCommit(false);
+			//SQLを保持するPreparedStatementオブジェクトの生成
+			String sql = "DELETE FROM favorite WHERE favorite_id = ?;";
+			pstatement = connection.prepareStatement(sql);
+
+			//INパラメータの設定
+			pstatement.setInt(1, favorite.getFavorite_id());
+			
+			//登録を実行
+			numRow = pstatement.executeUpdate();
+		}finally {
+			if(numRow > 0) {
+				connection.commit();
+			}else {
+				connection.rollback();
+			}
+		}
+		return numRow;
+		
 	}
 }
