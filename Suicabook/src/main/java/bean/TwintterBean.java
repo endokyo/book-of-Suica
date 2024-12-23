@@ -3,9 +3,9 @@ package bean;
 import java.io.Serializable;
 
 public class TwintterBean implements Serializable {
-	private int user_id;
+	private int user_id; //コメントしたユーザーのIDを保持
 	private String user_name;	//ユーザーの名前を保存
-	private int book_id;
+	private int book_id; //コメントされた書籍のIDを保持
 	private String twintter_text;	//コメントの内容を保存
 	
 	public String getUser_name() {

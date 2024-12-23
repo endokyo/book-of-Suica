@@ -1,9 +1,9 @@
 package bean;
 
 public class UserBean {
-	private int id;
-	private String name;
-	private String password;
+	private int id; //ユーザーIDを保持
+	private String name; //ユーザーの名前を保持
+	private String password; // ユーザーのパスワードを保持
 	
 	public int getId() {
 		return id;

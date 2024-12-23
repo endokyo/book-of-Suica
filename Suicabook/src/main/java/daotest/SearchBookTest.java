@@ -1,7 +1,6 @@
 package daotest;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
 
 import bean.BookBean;
 import dao.BookDao;
@@ -11,7 +10,6 @@ public class SearchBookTest {
 		BookDao dao = null;
 		int id = Integer.parseInt(args[0]);
 		BookBean bean = null;
-		ArrayList<BookBean> list = null;
 		try {
 			dao = new BookDao();
 
