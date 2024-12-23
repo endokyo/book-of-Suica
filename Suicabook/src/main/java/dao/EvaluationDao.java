@@ -65,8 +65,8 @@ public class EvaluationDao {
 			pstatement = connection.prepareStatement(sql);
 			pstatement.setInt(1, eval.getUser_id());
 			pstatement.setInt(2, eval.getBook_id());
-			pstatement.setInt(1, eval.getEvaluation_score());
-			pstatement.setString(2, eval.getEvaluation_review());
+			pstatement.setInt(3, eval.getEvaluation_score());
+			pstatement.setString(4, eval.getEvaluation_review());
 			numRow = pstatement.executeUpdate();
 
 		} finally{
