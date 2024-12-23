@@ -1,10 +1,11 @@
 package bean;
+import java.io.Serializable;
 
-public class StatusBean {
-	private int todaygenre;
-	private String keyword;
-	private String genre;
-	private int page;
+public class StatusBean implements Serializable  {
+	private int todaygenre;	//おすすめのジャンルを保存
+	private String keyword;	//検索ワードを保存
+	private String genre;	//検索ジャンルを保存
+	private int page; 		//一覧画面の現在表示されているページを保存
 	
 	public int getTodaygenre() {
 		return todaygenre;
