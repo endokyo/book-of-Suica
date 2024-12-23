@@ -92,15 +92,14 @@ public class EvaluationDao {
 			connection.setAutoCommit(false);
 			String sql = "update evaluation set evaluation_score = ? ,evaluation_review = ? where evaluation_id = ?;";
 			pstatement = connection.prepareStatement(sql);
+			
 			pstatement.setInt(1, eval.getEvaluation_score());
 			pstatement.setString(2, eval.getEvaluation_review());
 			pstatement.setInt(3, eval.getId());
 
 			numRow = pstatement.executeUpdate();
 
-		} finally
-
-		{
+		} finally{
 			if (numRow > 0) {
 				// 登録成功時はコミット
 				connection.commit();
