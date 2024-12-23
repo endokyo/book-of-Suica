@@ -1,6 +1,4 @@
 package bean;
-
-<<<<<<< HEAD
 import java.io.Serializable;
 
 public class StatusBean implements Serializable  {
