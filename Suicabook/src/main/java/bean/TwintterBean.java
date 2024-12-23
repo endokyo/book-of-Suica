@@ -3,8 +3,8 @@ package bean;
 import java.io.Serializable;
 
 public class TwintterBean implements Serializable {
-	private String user_name;
-	private String twintter_text;
+	private String user_name;	//ユーザーの名前を保存
+	private String twintter_text;	//コメントの内容を保存
 	
 	public String getUser_name() {
 		return user_name;
