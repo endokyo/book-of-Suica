@@ -34,7 +34,7 @@
 				</td>
 			</tr>
 		</table>
-		<br>
+		<hr>
 	</main>
 </body>
 </html>

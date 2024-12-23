@@ -1,5 +1,6 @@
 package bean;
 
+<<<<<<< HEAD
 import java.io.Serializable;
 
 public class StatusBean implements Serializable  {
@@ -32,5 +33,5 @@ public class StatusBean implements Serializable  {
 	public void setPage(int page) {
 		this.page = page;
 	}
-	
+
 }
