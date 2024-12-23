@@ -19,11 +19,11 @@
 	</header>
 
 	<main>
-	   <p> ${requestScope.bookinfo}</p>
+	   <p> ${requestScope.title}</p>
 	<br>
-	   <p>作者名:${requestScope.bookinfo}</p>
-	   <p>評価点平均:${requestScope.bookinfo}</p>
-	   <p>ジャンル名:${requestScope.bookinfo}</p>
+	   <p>作者名:${requestScope.creater}</p>
+	   <p>評価点平均:${requestScope.average}</p>
+	   <p>ジャンル名:${requestScope.genre}</p>
 	   <p><input type ="button" name="favorite_regist" value="☆"> 
 	      <imput type="hidden" name="button" value="favorite_regist"></p>
 	<br>
@@ -33,7 +33,7 @@
 	   <input type ="button" name="favorite_regist" value="コメントを入力"> 
 	   <imput type="hidden" name="button" value="comment">
 
-	   お気に入り数:${requestScope.bookinfo}
+	   お気に入り数:${requestScope.favcount}
 	   
 	   <input type ="button" name="comment_review" value="${requestScope.comment_review}"> 
 	   <imput type="hidden" name="button" value="comment_review">
@@ -46,22 +46,22 @@
 				<th>投稿日時</th>
 				<th></th>
 			<tr>
-				<c:forEach var="bookinfo" items="${requestScope.bookinfo }">
+				<c:forEach var="bookinfo" items="${requestScope.bookinfoList }">
 					<tr>
 					    <td><c:out value="${task.twintno }" /></td>
 						<td><c:out value="${task.username }" /></td>
-						<td><c:out value="${task.twint }" /></td>
+						<td><c:out value="${task.twintter_text }" /></td>
 						<td><c:out value="${task.post_time }" /></td>
 						<td>
 							<form action="home" method="post">
-								<input type="hidden" name="taskid" value="${task.task_id }">
+								<input type="hidden" name="taskid" value="${task.book_id }">
 								<input type="hidden" name="btn" value="delete"> <input
 									type="submit" value="削除">
 							</form>
 						</td>
 						<td>
 							<form action="home" method="post">
-								<input type="hidden" name="taskid" value="${task.task_id }">
+								<input type="hidden" name="taskid" value="${task.book_id }">
 								<c:if test="${not empty requestScope.taskid }">
 									<input type="hidden" name="btn" value="update">
 								</c:if>

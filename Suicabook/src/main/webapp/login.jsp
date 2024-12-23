@@ -20,7 +20,7 @@ text-align:center;
 		</h1>
 	</header>
 	<main>
-		<form  action="registration.jsp" method="POST"
+		<form  action="registration.jsp" method="POST">
 				<input type="submit" value="新規登録">
 		</form>
 		<form action="login" method="post">
