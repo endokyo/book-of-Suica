@@ -22,7 +22,7 @@ public class FavoriteListTest {
 				System.out.println("book_title：" + bean.getTitle());
 				System.out.println("book_creater：" + bean.getCreater());
 				System.out.println("book_genre：" + bean.getGenre());
-				System.out.println("book_comcount：" + bean.getComcount());
+				System.out.println("book_comcount：" + bean.getTwicount());
 				System.out.println("book_favcount：" + bean.getFavcount());
 				System.out.println("book_avecount：" + bean.getAvecount());
 				System.out.println("book_ave：" + bean.getAverage());
