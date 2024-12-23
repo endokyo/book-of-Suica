@@ -104,7 +104,6 @@ public class FavoriteDao {
 	
 	public int insertFavorite(FavoriteBean favorite) throws SQLException{
 		PreparedStatement pstatement = null;
-		ResultSet rs = null;
 		int numRow = 0;
 		
 		try {
@@ -126,9 +125,10 @@ public class FavoriteDao {
 			}else {
 				connection.rollback();
 			}
+			//PreparedStatementオブジェクトの解放
+			pstatement.close();
 		}
 		return numRow;
-		
 	}
 	
 	public int deleteFavorite(FavoriteBean favorite) throws SQLException{
