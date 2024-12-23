@@ -107,7 +107,17 @@
 			</c:when>
 		</c:chose>
 		<%--ページ数表示 --%>
-		<td>${sessionScope.page }</td>
+		<%
+			ArrayList<BookBean> booklist = (ArrayList<>)request.getAttribute("booklist");
+			int bookcount = booklist.size;
+			
+			double maxpage = bookcount / 20
+			
+			int lastpage = math.floor();
+		%>
+		<td>
+			${sessionScope.page }/${requestScope.lastpage }
+		</td>
 		<td>
 			<%--1ページ先 --%>
 			<form action="list" method="post">
