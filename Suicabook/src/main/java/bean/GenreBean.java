@@ -2,6 +2,7 @@ package bean;
 
 public class GenreBean {
 	private int id;
+	private String genre;
 
 	public int getId() {
 		return id;
@@ -9,6 +10,14 @@ public class GenreBean {
 
 	public void setId(int id) {
 		this.id = id;
+	}
+
+	public String getGenre() {
+		return genre;
+	}
+
+	public void setGenre(String genre) {
+		this.genre = genre;
 	}
 
 }
