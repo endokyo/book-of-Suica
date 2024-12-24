@@ -31,15 +31,16 @@ public class EvaluationDao {
 		}
 	}
 
-	//evaluation_idをもとにデータベースからデータを取得し空のEvaluationBeanに入れ、返すメソッド
-	public EvaluationBean searchEvaluation(int evaluation_id) throws SQLException, NumberFormatException {
+	//user_id,book_idをもとにデータベースからデータを取得し空のEvaluationBeanに入れ、返すメソッド
+	public EvaluationBean searchEvaluation(int user_id,int book_id) throws SQLException, NumberFormatException {
 		EvaluationBean bean = new EvaluationBean();
 		ResultSet rs = null;
 		PreparedStatement pstatement = null;
 		try {
-			String sql = "select * from evaluation where evaluation_id = ?;";
+			String sql = "select * from evaluation join book on evaluation.book_id = book.book_id where user_id = ? and evaluation.book_id = ?;";
 			pstatement = connection.prepareStatement(sql);
-			pstatement.setInt(1, evaluation_id);
+			pstatement.setInt(1, user_id);
+			pstatement.setInt(2, book_id);
 			rs = pstatement.executeQuery();
 			if (rs.next()) {
 				bean.setId(rs.getInt("evaluation_id"));
@@ -47,6 +48,7 @@ public class EvaluationDao {
 				bean.setBook_id(rs.getInt("book_id"));
 				bean.setEvaluation_score(rs.getInt("evaluation_score"));
 				bean.setEvaluation_review(rs.getString("evaluation_review"));
+				bean.setTitle(rs.getString("book_title"));
 			}
 		} finally {
 			pstatement.close();

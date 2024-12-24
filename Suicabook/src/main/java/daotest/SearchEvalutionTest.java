@@ -8,12 +8,13 @@ import dao.EvaluationDao;
 public class SearchEvalutionTest {
 	public static void main(String[] args) {
 		EvaluationDao dao = null;
-		int eva_id = Integer.parseInt(args[0]);
+		int user_id = Integer.parseInt(args[0]);
+		int book_id = Integer.parseInt(args[1]);
 		EvaluationBean bean = new EvaluationBean();
 		try {
 			dao = new EvaluationDao();
 			
-			bean = dao.searchEvaluation(eva_id);
+			bean = dao.searchEvaluation(user_id,book_id);
 			
 			if(bean != null) {
 				System.out.println("evalution_id:" + bean.getId());

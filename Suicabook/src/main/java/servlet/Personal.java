@@ -14,6 +14,9 @@ import jakarta.servlet.http.HttpSession;
 import bean.UserBean;
 import service.CreatePersonalEvaluation;
 import service.CreatePersonalFavorite;
+import service.DeleteFavorite;
+import service.GetEvaluationData;
+import service.SearchBook;
 
 /**
  * Servlet implementation class Personal
@@ -25,7 +28,7 @@ public class Personal extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		HttpSession session = request.getSession(true);
+		HttpSession session = request.getSession(false);
 		UserBean user = (UserBean) session.getAttribute("user");
 		String jsp;
 		//ログインされてなければログインページに飛ぶ
@@ -61,11 +64,16 @@ public class Personal extends HttpServlet {
 		request.setCharacterEncoding("UTF-8");
 		String btn = request.getParameter("btn");
 		String jsp;
+		HttpSession session = request.getSession(false);
+		UserBean user = (UserBean) session.getAttribute("user");
+		
 		
 		//ボタンがタイトルの場合
 		if(btn.equals("title")) {
 			CreateTwintter twintter = new CreateTwintter();
 			twintter.execute(request);
+			SearchBook search = new SearchBook();
+			search.execute(request, user.getId());
 			jsp = "/details.jsp";
 		}
 		//お気に入り解除の場合
@@ -76,7 +84,8 @@ public class Personal extends HttpServlet {
 		}
 		//評価編集の場合
 		else if(btn.equals("evalution")) {
-			
+			GetEvaluationData eva = new GetEvaluationData();
+			eva.execute(request, 0);
 		}
 		//エラー画面から戻ってきた場合
 		

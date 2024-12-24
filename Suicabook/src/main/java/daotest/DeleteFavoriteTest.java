@@ -9,12 +9,11 @@ public class DeleteFavoriteTest {
 	public static void main(String[] args) {
 		FavoriteDao dao = null;
 		FavoriteBean bean = new FavoriteBean();
+		int id = 1;
 		try {
 			dao = new FavoriteDao();
 
-			bean.setFavorite_id(-1);
-
-			int numrow = dao.deleteFavorite(bean);
+			int numrow = dao.deleteFavorite(id);
 			if (numrow > 0) {
 				System.out.println("成功");
 			} else {
