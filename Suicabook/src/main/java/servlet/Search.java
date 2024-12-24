@@ -34,13 +34,14 @@ public class Search extends HttpServlet {
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
-	public void doPost(HttpServletRequest request, HttpServletResponse response,String key) throws ServletException, IOException {
+	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
-		//String jsp = "/search.jsp";
+		String jsp = "/search.jsp";
 		CreateList cl = new CreateList();
 		UserBean ub = new UserBean();
 		
 		try {
+			String key = request.getParameter("id");
 			cl.execute(request,ub,key);
 		}catch(Exception ex) {
 			//例外処理

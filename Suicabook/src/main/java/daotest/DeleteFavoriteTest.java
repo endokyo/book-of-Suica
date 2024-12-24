@@ -14,7 +14,7 @@ public class DeleteFavoriteTest {
 
 			bean.setFavorite_id(-1);
 
-			int numrow = dao.deleteFavorite(bean);
+			int numrow = dao.deleteFavorite(Integer.parseInt(args[0]));
 			if (numrow > 0) {
 				System.out.println("成功");
 			} else {

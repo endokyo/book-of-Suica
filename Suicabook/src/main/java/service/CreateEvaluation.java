@@ -8,12 +8,11 @@ import jakarta.servlet.http.HttpServletRequest;
 import bean.EvaluationBean;
 import dao.EvaluationDao;
 
-public class GetEvaluationData {
+public class CreateEvaluation {
 	public void execute(HttpServletRequest request, int book_id) throws Exception {
 		//リストを作成しrequestに入れる
 		ArrayList<EvaluationBean> list = new ArrayList<EvaluationBean>();
 		EvaluationDao dao = null;
-		book_id = 1;
 		try {
 			dao = new EvaluationDao();
 			list = dao.getEvaluationListSortByBook(book_id);
