@@ -102,6 +102,34 @@ public class FavoriteDao {
 		return list;
 	}
 	
+	public ArrayList<String> getFavoriteGenre(int user_id) throws SQLException{
+		ArrayList<String> list = new ArrayList<>();
+		PreparedStatement pstatement = null;
+		ResultSet rs = null;
+		
+		try {
+			//SQLを保持するPreparedStatementオブジェクトの生成
+			String sql = "SELECT DISTINCT genre.genre_name, max_genre.count FROM ( SELECT genre.genre_id, genre.genre_name, COUNT(*) as count FROM favorite JOIN book ON favorite.book_id = book.book_id JOIN genre ON book.genre_id = genre.genre_id WHERE favorite.user_id = ? GROUP BY genre.genre_id, genre.genre_name ) as max_genre WHERE max_genre.count = ( SELECT MAX(count) FROM ( SELECT COUNT(*) as count FROM favorite JOIN book ON favorite.book_id = book.book_id JOIN genre ON book.genre_id = genre.genre_id WHERE favorite.user_id = ? GROUP BY genre.genre_id ) as counts );";
+			pstatement = connection.prepareStatement(sql);
+			
+
+			pstatement.setInt(1, user_id);
+			pstatement.setInt(2, user_id);
+			
+			//SQLを発行し、抽出結果が格納されたResultSetオブジェクトを取得
+			rs = pstatement.executeQuery();
+			
+			while (rs.next()) {
+				String genre = rs.getString("genre_name");
+				list.add(genre);
+			}
+			
+		}finally {
+			pstatement.close();
+		}
+		return list;
+	}
+	
 	public int insertFavorite(FavoriteBean favorite) throws SQLException{
 		PreparedStatement pstatement = null;
 		int numRow = 0;
@@ -131,7 +159,7 @@ public class FavoriteDao {
 		return numRow;
 	}
 	
-	public int deleteFavorite(FavoriteBean favorite) throws SQLException{
+	public int deleteFavorite(int favorite) throws SQLException{
 		PreparedStatement pstatement = null;
 		int numRow = 0;
 		
@@ -143,7 +171,7 @@ public class FavoriteDao {
 			pstatement = connection.prepareStatement(sql);
 
 			//INパラメータの設定
-			pstatement.setInt(1, favorite.getFavorite_id());
+			pstatement.setInt(1, favorite);
 			
 			//登録を実行
 			numRow = pstatement.executeUpdate();
