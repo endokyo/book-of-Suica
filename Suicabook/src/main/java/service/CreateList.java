@@ -3,8 +3,6 @@ package service;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import jakarta.servlet.RequestDispatcher;
-import jakarta.servlet.ServletContext;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 
@@ -15,23 +13,23 @@ import dao.BookDao;
 
 //書籍の登録順の昇順リストを作成する
 public class CreateList {
-	public void execute(HttpServletRequest request,UserBean user,String keyword)throws Exception{
+	public void execute(HttpServletRequest request)throws Exception{
 		//リストを作成しrequestに入れる
 		HttpSession session = request.getSession(false);
-		BookDao bdao = null;
-		BookBean bb = (BookBean)request.getAttribute("booklist");
-		StatusBean sb = (StatusBean)session.getAttribute("status");
-		int genreid = sb.getGenre();
-		ArrayList<BookBean> list = new ArrayList<>();
+		UserBean ub = (UserBean) session.getAttribute("user");
+		StatusBean sb = (StatusBean) session.getAttribute("status");
+		int pagecount = sb.getPage();
 		BookDao dao = null;
+		ArrayList<BookBean> list = new ArrayList<>();
 		try {
 			dao = new BookDao();
-			if(genre != null) {
-				list = dao.getBookListSortByRegist(user,keyword,genreid);
-			}else {
-				list = dao.getBookListSortByRegist(user,keyword);
+			//書籍一覧を並び替え
+			if(sb.getGenreid() > 0 ) {	//検索ワード、ジャンル
+				list = dao.getBookListSortByRegist(ub,sb.getKeyword(),sb.getGenreid());
+			}else {				//検索ワード、All
+				list = dao.getBookListSortByRegist(ub,sb.getKeyword());
 			}	
-			
+			//一覧表示用に、ソートした書籍一覧から20冊取得する
 			ArrayList<BookBean> page = new ArrayList<>();
 			for(int i = (20*(pagecount -1) +1); i <= 20*pagecount +1; i++) {
 					if(list.contains(list.get(i))) {
@@ -40,6 +38,7 @@ public class CreateList {
 						break;
 					}
 			}
+			request.setAttribute("booklist", page);
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch (SQLException e) {
@@ -50,47 +49,4 @@ public class CreateList {
 			}
 		}
 	}			
-}
-
-HttpSession session = request.getSession(false);
-UserBean user = (UserBean) session.getAttribute("user");
-BookDao bdao = null;
-BookBean bb = (BookBean)request.getAttribute("booklist");
-String keyword = (String)request.getAttribute("keyword");
-String genre = (String)request.getAttribute("genre");
-StatusBean sb = (StatusBean)session.getAttribute("page");
-int userid = user.getId();
-ArrayList<BookBean> booklist = new ArrayList<>();
-booklist.add(bb);
-int pagecount = sb.getPage();
-String jsp;
-
-try {
-	bdao = new BookDao();
-	if(genre != null) {
-		bdao.getBookListSortByRegist(user,keyword,genre);			
-	}else {//ジャンルがALLの時
-		
-		
-		
-	}
-	ArrayList<BookBean> page = new ArrayList<>();
-	for(int i = (20*(pagecount -1) +1); i <= 20*pagecount +1; i++) {
-			if(booklist.contains(booklist.get(i))) {
-				page.add(booklist.get(i));
-			}else {
-				break;
-			}
-	}
-	
-	ServletContext context = getServletContext();
-	RequestDispatcher rd = context.getRequestDispatcher(jsp);
-	rd.forward(request, response);
-}catch(SQLException e) {
-	e.printStackTrace();
-} catch (ClassNotFoundException e) {
-	e.printStackTrace();
-}finally {
-	bdao.close();
-}
 }

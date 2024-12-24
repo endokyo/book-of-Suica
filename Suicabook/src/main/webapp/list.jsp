@@ -11,7 +11,7 @@
 	<h2>本日のおすすめ</h2>
 	<%--おすすめ画面遷移 --%>
 	<form action="recommend" method="get">
-		<input type="submit" name="button" value="${sessionScope.status }">
+		<input type="submit" value="${sessionScope.status }">
 	</form>
 	<h1>書籍一覧</h1>
 	
@@ -27,7 +27,7 @@
 						<option value="favorite">お気に入り数順</option>
 					</select>
 				</tb>
-				<tb><input type="submit" name="button" value="ソート"></tb>
+				<tb><input type="submit" value="ソート"></tb>
 			</form>
 			
 			<tb><h2>${requestScope.message }</h2></tb>
@@ -36,6 +36,7 @@
 				<%--検索クリアボタン --%>
 				<form action="list" method="get">
 					<input type="submit" value="検索クリア">
+					<input type="hiddun" name="button" value="clear">
 				</form>
 			</td>
 			
@@ -43,6 +44,7 @@
 				<%--検索画面遷移 --%>
 				<form action="search" method="get">
 					<input type="submit" value="検索">
+					<input type="hiddun" name="button" value="search">
 				</form>
 			</td>
 		</tr>
@@ -106,15 +108,16 @@
 				</td>
 			</c:when>
 		</c:chose>
-		<%--ページ数表示 --%>
+		<%--ページ数表示 
 		<%
 			ArrayList<BookBean> booklist = (ArrayList<>)request.getAttribute("booklist");
 			int bookcount = booklist.size;
 			
-			double maxpage = bookcount / 20
+			double maxpage = bookcount / 20;
 			
 			int lastpage = math.floor();
 		%>
+		--%>
 		<td>
 			${sessionScope.page }/${requestScope.lastpage }
 		</td>
