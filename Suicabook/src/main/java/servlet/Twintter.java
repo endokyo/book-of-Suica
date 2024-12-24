@@ -63,7 +63,7 @@ public class Twintter extends HttpServlet {
 						HttpSession se = request.getSession(false);
 						UserBean user = (UserBean) se.getAttribute("user");
 						BookBean book = (BookBean) se.getAttribute("book");
-				//-------------------------------
+				//---------------------------------------
 						EvaluationBean eb = (EvaluationBean) request.getAttribute("evaluationdetails");
 						EvaluationBean bean = new EvaluationBean();
 						bean.setUser_id(user.getId());

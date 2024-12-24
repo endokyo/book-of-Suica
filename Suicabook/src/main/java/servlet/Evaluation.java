@@ -62,7 +62,7 @@ public class Evaluation extends HttpServlet {
 				if (button.equals("投稿")) {
 					if (content.length() <= 500) {
 						HttpSession se = request.getSession(false);
-						if (btn.equals("編集")) { //ユーザー個人画面から既に入力した評価を編集する場合
+						if (btn.equals("編集")) { 				//ユーザー個人画面から既に入力した評価を編集する場合
 							EvaluationBean eb = (EvaluationBean) request.getAttribute("evaluationdetails");
 							EvaluationBean bean = new EvaluationBean();
 							String id = request.getParameter("evaluation_id");
@@ -71,8 +71,8 @@ public class Evaluation extends HttpServlet {
 							bean.setEvaluation_review(eb.getEvaluation_review());
 							UpdateEvaluation ue = new UpdateEvaluation();
 							ue.execute(bean);
-							jsp = "/personal.jsp"; //←書籍詳細画面から評価入力(編集)した際の処理が不十分
-						} else { //書籍詳細画面から初めて評価を入力する場合
+							jsp = "/personal.jsp"; 		//←書籍詳細画面から評価入力(編集)した際の処理が不十分
+						} else { 								//書籍詳細画面から初めて評価を入力する場合
 							UserBean user = (UserBean) se.getAttribute("user");
 							BookBean book = (BookBean) se.getAttribute("book");
 							EvaluationBean eb = (EvaluationBean) request.getAttribute("evaluationdetails");
