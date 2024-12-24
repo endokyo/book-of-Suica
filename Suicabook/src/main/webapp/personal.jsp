@@ -29,6 +29,7 @@
 	<c:if test="${requestScope.userid == sessionScope.user.id  }">
 		<td><form action="personal" method="post">
 		<input type="hidden" name="btn" value="cancel">
+		<input type="hidden" name="bookid" value="${book.id }">
 		<input type="submit" value="登録解除">
 		</form>
 		</td>
@@ -54,6 +55,7 @@
 	<c:if test="${requestScope.userid == sessionScope.user.id  }">
 		<td><form action="personal" method="post">
 		<input type="hidden" name="btn" value="evalution">
+		<input type="hidden" name="bookid" value="${eva.id }">
 		<input type="submit" value="評価編集">
 		</form>
 		</td>
