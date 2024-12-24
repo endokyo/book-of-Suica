@@ -9,7 +9,7 @@ public class SearchBook {
 	public void execute(HttpServletRequest request, int user_id) throws Exception {
 		BookDao dao = null;
 		BookBean bean;
-		String id = request.getParameter("book_id");
+		String id = request.getParameter("bookid");
 		int book_id = Integer.parseInt(id);
 		try {
 			dao = new BookDao();
