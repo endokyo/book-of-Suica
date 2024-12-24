@@ -8,13 +8,10 @@ import dao.FavoriteDao;
 public class DeleteFavoriteTest {
 	public static void main(String[] args) {
 		FavoriteDao dao = null;
-		FavoriteBean bean = new FavoriteBean();
 		try {
 			dao = new FavoriteDao();
-
-			bean.setFavorite_id(-1);
-
 			int numrow = dao.deleteFavorite(Integer.parseInt(args[0]));
+
 			if (numrow > 0) {
 				System.out.println("成功");
 			} else {
