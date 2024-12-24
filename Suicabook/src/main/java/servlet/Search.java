@@ -12,6 +12,7 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import bean.StatusBean;
 import bean.UserBean;
+import service.CreateGenreList;
 import service.CreateList;
 
 /**
@@ -26,6 +27,15 @@ public class Search extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
+		//---------------------------------------------------
+		CreateGenreList cgl = new CreateGenreList();
+		try {
+			request.setAttribute("genrelist",cgl.execute(request));
+		} catch (Exception e) {
+			// TODO 自動生成された catch ブロック
+			e.printStackTrace();
+		}
+		//---------------------------------------------------
 		// JSP への転送
 		ServletContext context = getServletContext();
 		RequestDispatcher dispatcher = context.getRequestDispatcher("/search.jsp");
@@ -43,8 +53,10 @@ public class Search extends HttpServlet {
 		StatusBean sb = new StatusBean();
 		
 		try {
+			//requestから検索ワードとジャンル名を取得
 			sb.setKeyword(request.getParameter("id"));
 			sb.setGenre(request.getParameter("genrename"));
+			//ジャンル入力の有無で引数の個数を判定する
 			if(sb.getGenre() == "ALL") {
 				cl.execute(request,ub,sb.getKeyword());	
 			}else {
