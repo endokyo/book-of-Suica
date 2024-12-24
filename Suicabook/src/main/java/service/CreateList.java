@@ -13,22 +13,21 @@ import dao.BookDao;
 
 //書籍の登録順の昇順リストを作成する
 public class CreateList {
-	public void execute(HttpServletRequest request,UserBean user,String keyword)throws Exception{
+	public void execute(HttpServletRequest request)throws Exception{
 		//リストを作成しrequestに入れる
 		HttpSession session = request.getSession(false);
-		BookBean bb = (BookBean)request.getAttribute("booklist");
-		int genreid = bb.getGenre_id();
-		StatusBean sb = (StatusBean)session.getAttribute("page");
+		UserBean ub = (UserBean) session.getAttribute("user");
+		StatusBean sb = (StatusBean) session.getAttribute("status");
 		int pagecount = sb.getPage();
 		BookDao dao = null;
 		ArrayList<BookBean> list = new ArrayList<>();
 		try {
 			dao = new BookDao();
 			//書籍一覧を並び替え
-			if(genreid != 0 ) {	//検索ワード、ジャンル
-				list = dao.getBookListSortByRegist(user,keyword,genreid);
+			if(sb.getGenreid() > 0 ) {	//検索ワード、ジャンル
+				list = dao.getBookListSortByRegist(ub,sb.getKeyword(),sb.getGenreid());
 			}else {				//検索ワード、All
-				list = dao.getBookListSortByRegist(user,keyword);
+				list = dao.getBookListSortByRegist(ub,sb.getKeyword());
 			}	
 			//一覧表示用に、ソートした書籍一覧から20冊取得する
 			ArrayList<BookBean> page = new ArrayList<>();

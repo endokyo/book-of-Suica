@@ -16,7 +16,9 @@ import bean.StatusBean;
 import bean.UserBean;
 import dao.BookDao;
 import service.CreateAverage;
+import service.CreateFavoriteCount;
 import service.CreateList;
+import service.CreateTwintterCount;
 
 
 
@@ -32,10 +34,8 @@ public class List extends HttpServlet {
 	 */
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		HttpSession session = request.getSession(true);
+		HttpSession session = request.getSession(false);
 		UserBean user = (UserBean) session.getAttribute("user");
-		StatusBean keyword = (StatusBean)session.getAttribute("keyword");
-		String message = (String)request.getAttribute("message");
 		CreateList createlist = new CreateList();
 		String jsp;
 		//ログインされてなければログインページに飛ぶ
@@ -44,9 +44,8 @@ public class List extends HttpServlet {
 		}else {
 			//書籍一覧を作成
 			try {
-				createlist.execute(request,user,keyword);
+				createlist.execute(request);
 				request.setAttribute("message", "お気に入りの書籍を見つけよう！！");
-				session.setAttribute("page", 1);
 				jsp = "/list.jsp";
 			}catch (Exception e){
 				e.printStackTrace();
@@ -55,6 +54,7 @@ public class List extends HttpServlet {
 				jsp = "/error.jsp";
 			}
 		}
+		jsp = "/list.jsp";
 		ServletContext context = getServletContext();
 		RequestDispatcher rd = context.getRequestDispatcher(jsp);
 		rd.forward(request, response);
@@ -67,6 +67,7 @@ public class List extends HttpServlet {
 		// TODO Auto-generated method stub
 		HttpSession session = request.getSession(false);
 		UserBean user = (UserBean) session.getAttribute("user");
+		StatusBean sb = (StatusBean) session.getAttribute("status");
 		BookDao bdao = null;
 		String button = (String)request.getAttribute("button");
 		String sortname = (String)request.getAttribute("sortname");
@@ -78,16 +79,16 @@ public class List extends HttpServlet {
 			if(sortname != null) {
 				if(sortname.equals("regist")) {
 					CreateList cl =new CreateList();
-					cl.execute(request,user,keyword);
+					cl.execute(request);
 				}else if(sortname.equals("average")) {
 					CreateAverage ca =new CreateAverage();
-					ca.execute(request,user,keyword);
+					ca.execute(request);
 				}else if(sortname.equals("twinter")) {
 					CreateTwintterCount ct =new CreateTwintterCount();
-					ct.execute(request,user,keyword);
+					ct.execute(request);
 				}else if(sortname.equals("favorite")) {
 					CreateFavoriteCount cf =new CreateFavoriteCount();
-					cf.execute(request,user,keyword);
+					cf.execute(request);
 				}
 				
 			}else if(button != null) {
@@ -102,9 +103,15 @@ public class List extends HttpServlet {
 				}else if(button.equals("back")){	
 				
 				}else if(button.equals("next")){
+					int nowpage = sb.getPage();
+					nowpage++;
+					sb.setPage(nowpage);
+					session.setAttribute("status", sb);
+					bookListCreate(request,sb);
+				}else if(button.equals("last")){
 					
-				}else if(button.equals("last")){	
 				}
+				jsp = "/list.jsp";
 			}else {
 				request.setAttribute("returnjsp", "list");
 				jsp = "/error.jsp";
@@ -123,4 +130,21 @@ public class List extends HttpServlet {
 			bdao.close();
 		}
 	}
+	
+	public void bookListCreate(HttpServletRequest request,StatusBean sb)throws Exception {
+		if(sb.getNowsort().equals("登録")) {
+			CreateList cl = new CreateList();
+			cl.execute(request);
+		}else if(sb.getNowsort().equals("評価")) {
+			CreateAverage ca = new CreateAverage();
+			ca.execute(request);
+		}else if(sb.getNowsort().equals("コメント数")) {
+			CreateTwintterCount ct = new CreateTwintterCount();
+			ct.execute(request);
+		}else if(sb.getNowsort().equals("お気に入り数")) {
+			CreateFavoriteCount cf = new CreateFavoriteCount();
+			cf.execute(request);
+		}
+	}
 }
+

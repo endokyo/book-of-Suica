@@ -36,6 +36,7 @@
 				<%--検索クリアボタン --%>
 				<form action="list" method="get">
 					<input type="submit" value="検索クリア">
+					<input type="hiddun" name="button" value="clear">
 				</form>
 			</td>
 			
@@ -43,6 +44,7 @@
 				<%--検索画面遷移 --%>
 				<form action="search" method="get">
 					<input type="submit" value="検索">
+					<input type="hiddun" name="button" value="search">
 				</form>
 			</td>
 		</tr>
@@ -106,7 +108,7 @@
 				</td>
 			</c:when>
 		</c:chose>
-		<%--ページ数表示 --%>
+		<%--ページ数表示 
 		<%
 			ArrayList<BookBean> booklist = (ArrayList<>)request.getAttribute("booklist");
 			int bookcount = booklist.size;
@@ -115,6 +117,7 @@
 			
 			int lastpage = math.floor();
 		%>
+		--%>
 		<td>
 			${sessionScope.page }/${requestScope.lastpage }
 		</td>

@@ -11,8 +11,8 @@ import bean.StatusBean;
 import bean.UserBean;
 import dao.BookDao;
 
-//書籍の評価平均順の昇順リストを作成する
-public class CreateAverage {
+//書籍のコメント数順の昇順リストを作成する
+public class CreateTwintterCount {
 	public void execute(HttpServletRequest request)throws Exception{
 		//リストを作成しrequestに入れる
 		HttpSession session = request.getSession(false);
@@ -25,9 +25,9 @@ public class CreateAverage {
 			dao = new BookDao();
 			//書籍一覧を並び替え
 			if(sb.getGenreid() > 0 ) {	//検索ワード、ジャンル
-				list = dao.getBookListSortByAverage(ub,sb.getKeyword(),sb.getGenreid());
+				list = dao.getBookListSortByTwintter(ub,sb.getKeyword(),sb.getGenreid());
 			}else {				//検索ワード、All
-				list = dao.getBookListSortByAverage(ub,sb.getKeyword());
+				list = dao.getBookListSortByTwintter(ub,sb.getKeyword());
 			}	
 			//一覧表示用に、ソートした書籍一覧から20冊取得する
 			ArrayList<BookBean> page = new ArrayList<>();
