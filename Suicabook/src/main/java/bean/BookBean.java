@@ -57,8 +57,8 @@ public class BookBean {
 	public int getTwicount() {
 		return twicount;
 	}
-	public void setTwicount(int comcount) {
-		this.twicount = comcount;
+	public void setTwicount(int twicount) {
+		this.twicount = twicount;
 	}
 	public int getFavcount() {
 		return favcount;
