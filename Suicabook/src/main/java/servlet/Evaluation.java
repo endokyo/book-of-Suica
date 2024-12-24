@@ -12,8 +12,10 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
+import bean.BookBean;
 import bean.EvaluationBean;
 import bean.UserBean;
+import service.AddEvaluation;
 import service.UpdateEvaluation;
 
 /**
@@ -56,68 +58,66 @@ public class Evaluation extends HttpServlet {
 		String btn = request.getParameter("btn");
 
 		try {
-			if (button != null && !button.isEmpty()) { 
+			if (button != null && !button.isEmpty()) {
 				if (button.equals("投稿")) {
-					if (content != null) {
-						if (content.length() <= 500) {
-							try {
-								HttpSession se = request.getSession(false);
-								if (btn.equals("編集")) {
-									UserBean user = (UserBean) se.getAttribute("user");
-									EvaluationBean eb = (EvaluationBean) request.getAttribute("evaluationdetails");
-									EvaluationBean bean = new EvaluationBean();
-									String id = request.getParameter("evaluation_id");
-									bean.setId(Integer.parseInt(id));
-									bean.setEvaluation_score(eb.getEvaluation_score());
-									bean.setEvaluation_review(eb.getEvaluation_review());
-									UpdateEvaluation update = new UpdateEvaluation();
-									update.execute(bean);
-								} else {
-									UserBean user = (UserBean) se.getAttribute("user");
-									EvaluationBean eb = (EvaluationBean) request.getAttribute("evaluationdetails");
-									EvaluationBean bean = new EvaluationBean();
-									bean.setEvaluation_score(eb.getEvaluation_score());
-									bean.setEvaluation_review(eb.getEvaluation_review());
-									UpdateEvaluation update = new UpdateEvaluation();
-									update.execute(bean);
-								}
-								jsp = "/taskhome.jsp";
-							} catch (ParseException e) {
-								request.setAttribute("errormessage", "日付に正常な値が入力されていません。");
-								request.setAttribute("returnjsp", "TaskEdit");
-								jsp = "/error.jsp";
+					if (content.length() <= 500) {
+						try {
+							HttpSession se = request.getSession(false);
+							if (btn.equals("編集")) { //ユーザー個人画面から既に入力した評価を編集する場合
+								EvaluationBean eb = (EvaluationBean) request.getAttribute("evaluationdetails");
+								EvaluationBean bean = new EvaluationBean();
+								String id = request.getParameter("evaluation_id");
+								bean.setId(Integer.parseInt(id));
+								bean.setEvaluation_score(eb.getEvaluation_score());
+								bean.setEvaluation_review(eb.getEvaluation_review());
+								UpdateEvaluation ue = new UpdateEvaluation();
+								ue.execute(bean);
+								jsp = "/personal.jsp";//←書籍詳細画面から評価入力(編集)した際の処理が不十分
+							} else { //書籍詳細画面から初めて評価を入力する場合
+								UserBean user = (UserBean) se.getAttribute("user");
+								BookBean book = (BookBean) se.getAttribute("book");
+								EvaluationBean eb = (EvaluationBean) request.getAttribute("evaluationdetails");
+								EvaluationBean bean = new EvaluationBean();
+								bean.setUser_id(user.getId());
+								bean.setBook_id(book.getId());
+								bean.setEvaluation_score(eb.getEvaluation_score());
+								bean.setEvaluation_review(eb.getEvaluation_review());
+								AddEvaluation ae = new AddEvaluation();
+								ae.execute(bean);
+								jsp = "/detail.jsp";
 							}
-						}
-					} else{
-						request.setAttribute("errormessage", "必須項目が入力されていません。");
-						jsp = "/error.jsp";
-						request.setAttribute("returnjsp", "TaskEdit");
-					}
 
+						} catch (ParseException e) {
+							request.setAttribute("errormessage", "日付に正常な値が入力されていません。");
+							request.setAttribute("returnjsp", "TaskEdit");
+							jsp = "/error.jsp";
+						}
+					} else {
+						request.setAttribute("errormessage", "レビューが500文字を超過しています。");
+						jsp = "/error.jsp";
+						request.setAttribute("returnjsp", "evaluation");
+					}
 				} else {
 					request.setAttribute("errormessage", "ボタンが押されませんでした。");
 					jsp = "/error.jsp";
-					request.setAttribute("returnjsp", "TaskEdit");
+					request.setAttribute("returnjsp", "evaluation");
 				}
-
 			} else if (btn.equals("error")) {
-				jsp = "/taskedit.jsp";
-
+				jsp = "/evaluation.jsp";
 			} else {
 				request.setAttribute("errormessage", "エラーが発生しました。ボタンの入力が確認できませんでした。");
 				jsp = "/error.jsp";
-				request.setAttribute("returnjsp", "TaskEdit");
+				request.setAttribute("returnjsp", "evaluation");
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			request.setAttribute("message", "エラーが発生しました。編集画面に戻ります。");
+			request.setAttribute("message", "エラーが発生しました。評価入力画面に戻ります。");
 			jsp = "/error.jsp";
-			request.setAttribute("returnjsp", "TaskEdit");
+			request.setAttribute("returnjsp", "evaluation");
 		}
 		// JSP への転送
-
-		if (jsp.equals("/taskhome.jsp")) {
-			response.sendRedirect("http://localhost:8080/TODO/home");
+		if (jsp.equals("/booklist.jsp")) {
+			response.sendRedirect("http://localhost:8080/Suicabook/list"); //リダイレクトでdoGetを呼び出す
 		} else {
 			ServletContext context = request.getServletContext();
 			RequestDispatcher dispatcher = context.getRequestDispatcher(jsp);

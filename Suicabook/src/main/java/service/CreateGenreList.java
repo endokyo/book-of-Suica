@@ -9,13 +9,14 @@ import bean.GenreBean;
 import dao.GenreDao;
 
 public class CreateGenreList {
-	public ArrayList<GenreBean> execute(HttpServletRequest request) throws Exception {
+	public void execute(HttpServletRequest request) throws Exception {
 		//リストを作成しrequestに入れる
 		ArrayList<GenreBean> list = new ArrayList<GenreBean>();
 		GenreDao dao = null;
 		try {
 			dao = new GenreDao();
 			list = dao.createGenreList();
+			request.setAttribute("genrelist", list);
 		} catch (ClassNotFoundException e) {
 			// TODO 自動生成された catch ブロック
 			e.printStackTrace();
@@ -27,6 +28,5 @@ public class CreateGenreList {
 				dao.close();
 			}
 		}
-		return list;
 	}
 }
