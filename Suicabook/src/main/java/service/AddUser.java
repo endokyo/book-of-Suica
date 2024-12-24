@@ -8,9 +8,9 @@ import dao.UserDao;
 public class AddUser {
 	public void execute(HttpServletRequest request) throws Exception {
 		UserDao dao = null;
-		String name = request.getParameter("name");
-		String pass = request.getParameter("pass");
-		String repass = request.getParameter("repass");
+		String name = request.getParameter("id");
+		String pass = request.getParameter("pw");
+		String repass = request.getParameter("pw2");
 
 		try {
 			dao = new UserDao();

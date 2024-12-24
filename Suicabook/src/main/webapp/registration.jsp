@@ -15,7 +15,8 @@ text-align:center;
 <body>
 	<header>
 		<%-- 新規登録画面では共通のheader.jspはincludeしない --%>
-		<form action="login" method="post">
+		<form action="regist" method="post">
+			<input type="hidden" name="btn" value="login">
 			<input type="submit" value="戻る">
 		</form>
 		<h1>
@@ -28,11 +29,11 @@ text-align:center;
 			<p class="message">${requestScope.message}</p>
 		</c:if>
 
-		<form action="login" method="post">
+		<form action="regist" method="post">
 			<div class="input">
 				<p>
 					＊英数字1~15桁のユーザー名を入力して下さい<br>
-					ユーザー名：<input type="text" name="id"　placeholder="suica01">
+					ユーザー名：<input type="text" name="id" placeholder="suica01">
 				</p>
 				<p>
 					＊英数字1~8桁のパスワードを入力して下さい<br>
@@ -40,9 +41,10 @@ text-align:center;
 				</p>
 				<p>
 					＊確認の為に再度パスワードを入力して下さい<br>
-					確認用：<input type="password"　name="pw2" placeholder="********">
+					確認用：<input type="password" name="pw2" placeholder="********">
 				</p>
 				<p>
+					<input type="hidden" name="btn" value="regist">
 					<input type="submit" value="新規登録">
 				</p>
 			</div>
