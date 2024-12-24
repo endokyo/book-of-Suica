@@ -59,6 +59,7 @@ public class BookDao {
 				bb.setImg(rs.getString("book_cover"));
 				bb.setCreater(rs.getString("book_creater"));
 				bb.setGenre(rs.getString("genre_name"));
+				bb.setGenre_id(rs.getInt("genre_id"));
 				bb.setAvecount(rs.getInt("book_avecount"));
 				bb.setAverage(rs.getDouble("book_ave"));
 				bb.setTwicount(rs.getInt("book_twicount"));
@@ -106,6 +107,7 @@ public class BookDao {
 				bb.setImg(rs.getString("book_cover"));
 				bb.setCreater(rs.getString("book_creater"));
 				bb.setGenre(rs.getString("genre_name"));
+				bb.setGenre_id(rs.getInt("genre_id"));
 				bb.setAvecount(rs.getInt("book_avecount"));
 				bb.setAverage(rs.getDouble("book_ave"));
 				bb.setTwicount(rs.getInt("book_twicount"));
@@ -156,6 +158,7 @@ public class BookDao {
 				bb.setImg(rs.getString("book_cover"));
 				bb.setCreater(rs.getString("book_creater"));
 				bb.setGenre(rs.getString("genre_name"));
+				bb.setGenre_id(rs.getInt("genre_id"));
 				bb.setAvecount(rs.getInt("book_avecount"));
 				bb.setAverage(rs.getDouble("book_ave"));
 				bb.setTwicount(rs.getInt("book_twicount"));
@@ -205,6 +208,7 @@ public class BookDao {
 				bb.setImg(rs.getString("book_cover"));
 				bb.setCreater(rs.getString("book_creater"));
 				bb.setGenre(rs.getString("genre_name"));
+				bb.setGenre_id(rs.getInt("genre_id"));
 				bb.setAvecount(rs.getInt("book_avecount"));
 				bb.setAverage(rs.getDouble("book_ave"));
 				bb.setTwicount(rs.getInt("book_twicount"));
@@ -256,6 +260,7 @@ public class BookDao {
 				bb.setImg(rs.getString("book_cover"));
 				bb.setCreater(rs.getString("book_creater"));
 				bb.setGenre(rs.getString("genre_name"));
+				bb.setGenre_id(rs.getInt("genre_id"));
 				bb.setAvecount(rs.getInt("book_avecount"));
 				bb.setAverage(rs.getDouble("book_ave"));
 				bb.setTwicount(rs.getInt("book_twicount"));
@@ -305,6 +310,7 @@ public class BookDao {
 				bb.setImg(rs.getString("book_cover"));
 				bb.setCreater(rs.getString("book_creater"));
 				bb.setGenre(rs.getString("genre_name"));
+				bb.setGenre_id(rs.getInt("genre_id"));
 				bb.setAvecount(rs.getInt("book_avecount"));
 				bb.setAverage(rs.getDouble("book_ave"));
 				bb.setTwicount(rs.getInt("book_twicount"));
@@ -356,6 +362,7 @@ public class BookDao {
 				bb.setImg(rs.getString("book_cover"));
 				bb.setCreater(rs.getString("book_creater"));
 				bb.setGenre(rs.getString("genre_name"));
+				bb.setGenre_id(rs.getInt("genre_id"));
 				bb.setAvecount(rs.getInt("book_avecount"));
 				bb.setAverage(rs.getDouble("book_ave"));
 				bb.setTwicount(rs.getInt("book_twicount"));
@@ -405,6 +412,7 @@ public class BookDao {
 				bb.setImg(rs.getString("book_cover"));
 				bb.setCreater(rs.getString("book_creater"));
 				bb.setGenre(rs.getString("genre_name"));
+				bb.setGenre_id(rs.getInt("genre_id"));
 				bb.setAvecount(rs.getInt("book_avecount"));
 				bb.setAverage(rs.getDouble("book_ave"));
 				bb.setTwicount(rs.getInt("book_twicount"));
@@ -456,6 +464,7 @@ public class BookDao {
 				bb.setImg(rs.getString("book_cover"));
 				bb.setCreater(rs.getString("book_creater"));
 				bb.setGenre(rs.getString("genre_name"));
+				bb.setGenre_id(rs.getInt("genre_id"));
 				bb.setAvecount(rs.getInt("book_avecount"));
 				bb.setAverage(rs.getDouble("book_ave"));
 				bb.setTwicount(rs.getInt("book_twicount"));
