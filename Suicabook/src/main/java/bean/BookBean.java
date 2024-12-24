@@ -6,6 +6,7 @@ public class BookBean {
 	private String img; // 書籍表紙を保持
 	private String creater; //書籍の著者を保持
 	private String genre; //書籍ジャンルを保持
+	private int genre_id; //
 	private int avecount; //評価を行った人数を保持
 	private double average; //評価の平均点を保持
 	private int twicount; //コメント数を保持
@@ -42,6 +43,12 @@ public class BookBean {
 	public void setGenre(String genre) {
 		this.genre = genre;
 	}
+	public int getGenre_id() {
+		return genre_id;
+	}
+	public void setGenre_id(int genre_id) {
+		this.genre_id = genre_id;
+	}
 	public int getAvecount() {
 		return avecount;
 	}
@@ -72,6 +79,5 @@ public class BookBean {
 	public void setFavorite(boolean favorite) {
 		this.favorite = favorite;
 	}
-	
 	
 }
