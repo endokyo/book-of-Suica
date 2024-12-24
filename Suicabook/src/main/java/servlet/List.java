@@ -2,7 +2,6 @@ package servlet;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.ArrayList;
 
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletContext;
@@ -13,10 +12,10 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
-import bean.BookBean;
 import bean.StatusBean;
 import bean.UserBean;
 import dao.BookDao;
+import service.CreateAverage;
 import service.CreateList;
 
 
@@ -35,7 +34,7 @@ public class List extends HttpServlet {
 		// TODO Auto-generated method stub
 		HttpSession session = request.getSession(true);
 		UserBean user = (UserBean) session.getAttribute("user");
-		String keyword = (String)request.getAttribute("keyword");
+		StatusBean keyword = (StatusBean)session.getAttribute("keyword");
 		String message = (String)request.getAttribute("message");
 		CreateList createlist = new CreateList();
 		String jsp;
@@ -69,40 +68,56 @@ public class List extends HttpServlet {
 		HttpSession session = request.getSession(false);
 		UserBean user = (UserBean) session.getAttribute("user");
 		BookDao bdao = null;
-		BookBean bb = (BookBean)request.getAttribute("booklist");
+		String button = (String)request.getAttribute("button");
+		String sortname = (String)request.getAttribute("sortname");
 		String keyword = (String)request.getAttribute("keyword");
-		String genre = (String)request.getAttribute("genre");
-		StatusBean sb = (StatusBean)session.getAttribute("page");
-		int userid = user.getId();
-		ArrayList<BookBean> booklist = new ArrayList<>();
-		booklist.add(bb);
-		int pagecount = sb.getPage();
 		String jsp;
 		
 		try {
 			bdao = new BookDao();
-			if(genre != null) {
-				bdao.getBookListSortByRegist(user,keyword,genre);			
-			}else {//ジャンルがALLの時
+			if(sortname != null) {
+				if(sortname.equals("regist")) {
+					CreateList cl =new CreateList();
+					cl.execute(request,user,keyword);
+				}else if(sortname.equals("average")) {
+					CreateAverage ca =new CreateAverage();
+					ca.execute(request,user,keyword);
+				}else if(sortname.equals("twinter")) {
+					CreateTwintterCount ct =new CreateTwintterCount();
+					ct.execute(request,user,keyword);
+				}else if(sortname.equals("favorite")) {
+					CreateFavoriteCount cf =new CreateFavoriteCount();
+					cf.execute(request,user,keyword);
+				}
 				
+			}else if(button != null) {
+				if(button.equals("false")) {
+					
+					
+				}else if(button.equals("true")){
+					
+					
+				}else if(button.equals("top")){
+					
+				}else if(button.equals("back")){	
 				
-				
+				}else if(button.equals("next")){
+					
+				}else if(button.equals("last")){	
+				}
+			}else {
+				request.setAttribute("returnjsp", "list");
+				jsp = "/error.jsp";
 			}
-			ArrayList<BookBean> page = new ArrayList<>();
-			for(int i = (20*(pagecount -1) +1); i <= 20*pagecount +1; i++) {
-					if(booklist.contains(booklist.get(i))) {
-						page.add(booklist.get(i));
-					}else {
-						break;
-					}
-			}
-			
+			jsp = "/list.jsp";
 			ServletContext context = getServletContext();
 			RequestDispatcher rd = context.getRequestDispatcher(jsp);
 			rd.forward(request, response);
 		}catch(SQLException e) {
 			e.printStackTrace();
 		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
 			e.printStackTrace();
 		}finally {
 			bdao.close();
