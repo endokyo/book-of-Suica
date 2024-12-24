@@ -10,6 +10,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+import bean.StatusBean;
 import bean.UserBean;
 import service.CreateList;
 
@@ -34,14 +35,21 @@ public class Search extends HttpServlet {
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
-	public void doPost(HttpServletRequest request, HttpServletResponse response,String key) throws ServletException, IOException {
+	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
-		//String jsp = "/search.jsp";
+		String jsp = "/search.jsp";
 		CreateList cl = new CreateList();
 		UserBean ub = new UserBean();
+		StatusBean sb = new StatusBean();
 		
 		try {
-			cl.execute(request,ub,key);
+			sb.setKeyword(request.getParameter("id"));
+			sb.setGenre(request.getParameter("genrename"));
+			if(sb.getGenre() == "ALL") {
+				cl.execute(request,ub,sb.getKeyword());	
+			}else {
+				cl.execute(request,ub,sb.getKeyword(),sb.getGenre());
+			}
 		}catch(Exception ex) {
 			//例外処理
 			System.out.println("例外エラーSearch.java");
