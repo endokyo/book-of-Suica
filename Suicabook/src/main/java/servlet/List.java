@@ -17,7 +17,6 @@ import bean.BookBean;
 import bean.StatusBean;
 import bean.UserBean;
 import dao.BookDao;
-import dao.FavoriteDao;
 import service.CreateList;
 
 
@@ -70,13 +69,12 @@ public class List extends HttpServlet {
 		HttpSession session = request.getSession(false);
 		UserBean user = (UserBean) session.getAttribute("user");
 		BookDao bdao = null;
-		FavoriteDao fdao =null;
 		BookBean bb = (BookBean)request.getAttribute("booklist");
 		String keyword = (String)request.getAttribute("keyword");
 		String genre = (String)request.getAttribute("genre");
 		StatusBean sb = (StatusBean)session.getAttribute("page");
 		int userid = user.getId();
-		ArrayList<BookBean> booklist = new ArrayList<>();	//
+		ArrayList<BookBean> booklist = new ArrayList<>();
 		booklist.add(bb);
 		int pagecount = sb.getPage();
 		String jsp;
@@ -84,15 +82,16 @@ public class List extends HttpServlet {
 		try {
 			bdao = new BookDao();
 			if(genre != null) {
-							
-			}else {
+				bdao.getBookListSortByRegist(user,keyword,genre);			
+			}else {//ジャンルがALLの時
+				
+				
 				
 			}
 			ArrayList<BookBean> page = new ArrayList<>();
-			for(int i = (20*(pagecount -1) +1); i <= 20*pagecount; i++) {
-					BookBean book = bdao.searchBook(i,userid);
-					if(booklist.contains(book)   ) {
-						page.add(book);
+			for(int i = (20*(pagecount -1) +1); i <= 20*pagecount +1; i++) {
+					if(booklist.contains(booklist.get(i))) {
+						page.add(booklist.get(i));
 					}else {
 						break;
 					}
@@ -102,12 +101,11 @@ public class List extends HttpServlet {
 			RequestDispatcher rd = context.getRequestDispatcher(jsp);
 			rd.forward(request, response);
 		}catch(SQLException e) {
-			
+			e.printStackTrace();
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}finally {
 			bdao.close();
-			fdao.close();
 		}
 	}
 }
