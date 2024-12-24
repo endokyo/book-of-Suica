@@ -30,17 +30,24 @@ public class Personal extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		HttpSession session = request.getSession(false);
+		HttpSession session = request.getSession(true);
 		UserBean user = (UserBean) session.getAttribute("user");
 		String jsp;
+		user = new UserBean();
+		user.setId(1);
+		user.setName("user01");
+		user.setPassword("pass01");
+
+		session.setAttribute("user", user);
 		//ログインされてなければログインページに飛ぶ
-		if (user == null) {
-			jsp = "/login.jsp";
-		} else {
+		//if (user == null) {
+			//jsp = "/login.jsp";
+		//} else {
 
 			try {
 				//お気に入り一覧と評価した書籍一覧を作成
 				createPage(request, user);
+				request.setAttribute("userid", 1);
 				jsp = "/personal.jsp";
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -48,7 +55,7 @@ public class Personal extends HttpServlet {
 				request.setAttribute("errormessage", "エラーが発生しました");
 				jsp = "/error.jsp";
 			}
-		}
+		//}
 
 		ServletContext context = getServletContext();
 		RequestDispatcher rd = context.getRequestDispatcher(jsp);
@@ -69,10 +76,10 @@ public class Personal extends HttpServlet {
 		try {
 			//ボタンがタイトルの場合
 			if (btn.equals("title")) {
-				CreateTwintter twintter = new CreateTwintter();
-				twintter.execute(request);
-				SearchBook search = new SearchBook();
-				search.execute(request, user.getId());
+//				CreateTwintter twintter = new CreateTwintter();
+//				twintter.execute(request);
+//				SearchBook search = new SearchBook();
+//				search.execute(request, user.getId());
 				jsp = "/details.jsp";
 			}
 			//お気に入り解除の場合
@@ -87,7 +94,12 @@ public class Personal extends HttpServlet {
 			//評価編集の場合
 			else if (btn.equals("evalution")) {
 				GetEvaluationData eva = new GetEvaluationData();
-				eva.execute(request, 0);
+				String bookid = request.getParameter("bookid");
+				int id = Integer.parseInt(bookid);
+				eva.execute(request, user.getId(),id);
+				SearchBook search = new SearchBook();
+				search.execute(request, id);
+				request.setAttribute("mode", 2);
 				jsp = "/evaluation.jsp";
 			}
 			//エラー画面から戻ってきた場合
@@ -97,12 +109,18 @@ public class Personal extends HttpServlet {
 			} //ボタンが選択されていなかった場合
 			else {
 				request.setAttribute("errormessage", "エラーが発生しました<br>戻るボタンを押下してください");
-				request.setAttribute("returnjsp", "personal");
+				request.setAttribute("back", "personal");
+				jsp = "/error.jsp";
 			}
 		} catch (Exception e) {
 			request.setAttribute("errormessage", "エラーが発生しました<br>戻るボタンを押下してください");
-			request.setAttribute("returnjsp", "personal");
+			request.setAttribute("back", "personal");
+			jsp = "/error.jsp";
 		}
+		
+		ServletContext context = getServletContext();
+		RequestDispatcher rd = context.getRequestDispatcher(jsp);
+		rd.forward(request, response);
 	}
 
 	//ユーザー個人画面の各種一覧の作成
