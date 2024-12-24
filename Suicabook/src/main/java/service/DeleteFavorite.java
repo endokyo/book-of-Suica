@@ -8,7 +8,7 @@ public class DeleteFavorite {
 	public void execute(HttpServletRequest request) throws Exception {
 		FavoriteDao dao = null;
 		// 情報をリクエストパラメーターから取得
-		String favorite_id = request.getParameter("task_id");
+		String favorite_id = request.getParameter("favorite_id");
 		try {
 			if (favorite_id != null) {
 				dao = new FavoriteDao();
