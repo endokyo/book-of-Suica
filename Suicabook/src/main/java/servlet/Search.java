@@ -9,11 +9,10 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 import bean.StatusBean;
-import bean.UserBean;
 import service.CreateGenreList;
-import service.CreateList;
 
 /**
  * Servlet implementation class UserLogin2
@@ -48,25 +47,23 @@ public class Search extends HttpServlet {
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
 		String jsp = "/search.jsp";
-		CreateList cl = new CreateList();
-		UserBean ub = new UserBean();
-		StatusBean sb = new StatusBean();
+		HttpSession session = request.getSession(false);
 
 		try {
 			//requestから検索ワードとジャンル名を取得
+			StatusBean sb = (StatusBean) session.getAttribute("status");
 			sb.setKeyword(request.getParameter("id"));
-			sb.setGenre(request.getParameter("genrename"));
-			//ジャンル入力の有無で引数の個数を判定する
-			if (sb.getGenre() == "ALL") {
-				cl.execute(request, ub, sb.getKeyword());
-			} else {
-				cl.execute(request, ub, sb.getKeyword(), sb.getGenre());
-			}
+			sb.setGenreid(Integer.parseInt(request.getParameter("genreid")));
+			sb.setNowsort("登録");
+			sb.setPage(1);
+			session.setAttribute("status",sb);
+			jsp = "/list.jsp";
 		} catch (Exception ex) {
 			//例外処理
+			//System.out.println(ex);
 			System.out.println("例外エラーSearch.java");
 		}
-		if (jsp.equals("/booklist.jsp")) {
+		if (jsp.equals("/list.jsp")) {
 			response.sendRedirect("http://localhost:8080/Suicabook/list"); //リダイレクトでdoGetを呼び出す
 		} else {
 			ServletContext context = getServletContext();
