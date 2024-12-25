@@ -13,7 +13,7 @@ public class SearchUserTest {
 		try {
 			dao = new UserDao();
 
-			bean = dao.searchUser(name);
+			bean = dao.getUser(name);
 			if (bean != null) {
 				System.out.println("user_id：" + bean.getId());
 				System.out.println("user_pass：" + bean.getPassword());

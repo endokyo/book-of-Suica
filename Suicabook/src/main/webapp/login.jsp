@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%--<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>--%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html lang="ja">
 <style>
@@ -14,13 +14,12 @@ text-align:center;
 </head>
 <body>
 	<header>
-		<c:import url="header.jsp" />
 		<h1>
 			<p>Suicaブックス</p>
 		</h1>
 	</header>
 	<main>
-		<form  action="registration.jsp" method="POST">
+		<form action="registration.jsp" method="POST">
 				<input type="submit" value="新規登録">
 		</form>
 		<form action="login" method="post">
@@ -30,10 +29,10 @@ text-align:center;
 			</c:if>
 			<div class="input">
 				<p>
-					ユーザー名：<input type="text" name="id" placeholder="suica01">
+					ユーザー名：<input type="text" name="user_name" placeholder="suica01">
 				</p>
 				<p>
-					パスワード：<input type="password" name="pw" placeholder="********">
+					パスワード：<input type="password" name="user_pass" placeholder="********">
 					<!-- cssで*表示が可能 -->
 				</p>
 				<p>
@@ -41,7 +40,6 @@ text-align:center;
 				</p>
 			</div>
 		</form>
-
 	</main>
 </body>
 </html>

@@ -30,20 +30,20 @@ public class Personal extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		HttpSession session = request.getSession(true);
+		HttpSession session = request.getSession(false);
 		UserBean user = (UserBean) session.getAttribute("user");
 		String jsp;
 		//ログインができるまで
-		user = new UserBean();
-		user.setId(1);
-		user.setName("user01");
-		user.setPassword("pass01");
-
-		session.setAttribute("user", user);
+//		user = new UserBean();
+//		user.setId(1);
+//		user.setName("user01");
+//		user.setPassword("pass01");
+//
+//		session.setAttribute("user", user);
 		//ログインされてなければログインページに飛ぶ
-		//if (user == null) {
-			//jsp = "/login.jsp";
-		//} else {
+		if (user == null) {
+			jsp = "/login.jsp";
+		} else {
 
 			try {
 				//お気に入り一覧と評価した書籍一覧を作成
@@ -57,7 +57,7 @@ public class Personal extends HttpServlet {
 				request.setAttribute("errormessage", "エラーが発生しました");
 				jsp = "/error.jsp";
 			}
-		//}
+		}
 
 		ServletContext context = getServletContext();
 		RequestDispatcher rd = context.getRequestDispatcher(jsp);

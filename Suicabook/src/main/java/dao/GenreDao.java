@@ -82,4 +82,62 @@ private Connection connection;
 		}
 		return arrayGenre;
 	}
+	
+	// おすすめジャンルを選定し、選定したおすすめジャンル情報を返すメソッド
+		public GenreBean getTodayGenreId(int user_id) throws SQLException {
+			PreparedStatement pstatement = null;
+			ResultSet rs = null;
+			GenreBean bean = null;
+			
+			try {
+				//SQLを保持するPreparedStatementオブジェクトの生成
+				String sql = """
+						SELECT g1.genre_id, sub.cnt, g1.genre_name
+							FROM genre g1
+							LEFT JOIN (
+								SELECT g2.genre_id, count(g2.genre_id) cnt
+									FROM genre g2
+									LEFT JOIN book b ON g2.genre_id = b.genre_id
+									LEFT JOIN favorite f ON b.book_id = f.book_id
+									WHERE f.user_id = ?
+									GROUP BY g2.genre_id
+									ORDER BY genre_id
+								) sub
+							ON g1.genre_id = sub.genre_id
+							WHERE (ifnull(sub.cnt, 0)) * 100 /
+									(
+									SELECT count(favorite_id)
+										FROM favorite f
+										WHERE f.user_id = ?
+									)
+								<= (100 / (SELECT count(*) FROM genre))
+							ORDER BY RAND()
+							LIMIT 1
+							;
+							""";
+
+				pstatement = connection.prepareStatement(sql);
+				pstatement.setInt(1, user_id);
+				pstatement.setInt(2, user_id);
+
+				//SQLを発行し、抽出結果が格納されたResultSetオブジェクトを取得
+				rs = pstatement.executeQuery();
+
+				while (rs.next()) {
+					bean = new GenreBean();
+
+					//列名を指定してResultSetオブジェクトから値を取得
+					bean.setId(rs.getInt("genre_id"));
+					bean.setGenre(rs.getString("genre_name"));
+				}
+
+				//ResultSetオブジェクトの解放
+				rs.close();
+				
+			} finally {
+				//PreparedStatementオブジェクトの解放
+				pstatement.close();
+			}
+			return bean;
+		}
 }

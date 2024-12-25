@@ -1,7 +1,7 @@
 package service;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 import jakarta.servlet.http.HttpServletRequest;
 
@@ -9,20 +9,17 @@ import bean.EvaluationBean;
 import dao.EvaluationDao;
 
 public class CreateEvaluation {
-	public void execute(HttpServletRequest request, int book_id) throws Exception {
-		//リストを作成しrequestに入れる
-		ArrayList<EvaluationBean> list = new ArrayList<EvaluationBean>();
+	public void execute(HttpServletRequest request, int user_id) throws Exception {
 		EvaluationDao dao = null;
 		try {
 			dao = new EvaluationDao();
-			list = dao.getEvaluationListSortByBook(book_id);
-			request.setAttribute("evaluation", list);
-		} catch (ClassNotFoundException e) {
-			// TODO 自動生成された catch ブロック
-			e.printStackTrace();
-		} catch (SQLException e) {
-			// TODO 自動生成された catch ブロック
-			e.printStackTrace();
+			int id = Integer.parseInt(request.getParameter("id"));
+			List<EvaluationBean> evaluationlist = new ArrayList<>();
+			
+			evaluationlist = dao.getEvaluationListSortByUser(id);
+			request.setAttribute("evaluationlist", evaluationlist);
+			request.setAttribute("mode", 2);
+
 		} finally {
 			if (dao != null) {
 				dao.close();

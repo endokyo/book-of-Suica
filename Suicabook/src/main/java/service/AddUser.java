@@ -16,7 +16,7 @@ public class AddUser {
 			dao = new UserDao();
 			//すべての項目が入力されている場合
 			if (name != null && !name.isEmpty() && pass != null && !pass.isEmpty() && repass != null && !repass.isEmpty()) {
-				UserBean bean = dao.searchUser(name);
+				UserBean bean = dao.getUser(name);
 				//データベース上に入力されたユーザー名がなかった場合
 				if (bean.getName() == null) {
 					//入力されたパスワードと確認用パスワードが同じ場合
