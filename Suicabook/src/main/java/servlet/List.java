@@ -68,7 +68,7 @@ public class List extends HttpServlet {
 				jsp = "/list.jsp";
 			}catch (Exception e){
 				e.printStackTrace();
-				request.setAttribute("errormessage", "");	//エラーメッセージ入れる
+				request.setAttribute("errormessage", "ログイン画面に戻って下さい");	//エラーメッセージ入れる
 				request.setAttribute("returnjsp", "list"); 
 				jsp = "/error.jsp";
 			}
@@ -88,27 +88,29 @@ public class List extends HttpServlet {
 		BookDao bdao = null;
 		String button = request.getParameter("button");
 		String sortname = request.getParameter("sortname");
+		String title = request.getParameter("title");
 		//String keyword = (String)request.getAttribute("keyword");
 		String jsp;
-		int bookid = Integer.parseInt(request.getParameter("bookid"));
+		
 		
 		try {
 			bdao = new BookDao();
 			if(sortname != null) {
 				//ソート順毎の処理
 				if(sortname.equals("regist")) {
-					CreateList cl =new CreateList();
-					cl.execute(request);
+					sb.setNowsort("登録");
 				}else if(sortname.equals("average")) {
-					CreateAverage ca =new CreateAverage();
-					ca.execute(request);
+					sb.setNowsort("評価");
 				}else if(sortname.equals("twinter")) {
-					CreateTwintterCount ct =new CreateTwintterCount();
-					ct.execute(request);
+					sb.setNowsort("コメント数");
 				}else if(sortname.equals("favorite")) {
-					CreateFavoriteCount cf =new CreateFavoriteCount();
-					cf.execute(request);
+					sb.setNowsort("お気に入り数");
 				}
+				sb.setPage(1);
+				bookListCreate(request,sb);
+				request.setAttribute("message", "お気に入りの書籍を見つけよう！！");
+				session.setAttribute("status", sb);
+				jsp = "/list.jsp";
 				
 			}else if(button != null) {
 				//お気に入り登録ボタン
@@ -116,39 +118,57 @@ public class List extends HttpServlet {
 					DeleteFavorite df = new DeleteFavorite();
 					df.execute(request);
 				}else if(button.equals("true")){
+					int bookid = Integer.parseInt(request.getParameter("bookid"));
 					FavoriteBean fb = new FavoriteBean();
 					fb.setUser_id(user.getId());
 					fb.setBook_id(bookid);
 					AddFavorite af = new AddFavorite();
 					af.execute(fb);
+				//検索クリアボタン
+				}else if(button.equals("clear")){
+					sb.setGenreid(0);
+					sb.setKeyword(" ");
+					sb.setPage(1);
+					sb.setNowsort("登録");
+					session.setAttribute("status", sb);
 				//ページ戻る/進むボタン
 				}else if(button.equals("top")){
 					sb.setPage(1);
 					session.setAttribute("status", sb);
 				}else if(button.equals("back")){	
 					int nowpage = sb.getPage();
-					nowpage--;
+					if(nowpage > 1) {
+						nowpage--;
+					}
 					sb.setPage(nowpage);
 					session.setAttribute("status", sb);
 				}else if(button.equals("next")){
 					int nowpage = sb.getPage();
-					nowpage++;
+					if(nowpage < sb.getMaxpage()){
+						nowpage++;
+					}
 					sb.setPage(nowpage);
 					session.setAttribute("status", sb);
-					bookListCreate(request,sb);
 				}else if(button.equals("last")){
 					int maxpage = sb.getMaxpage();
 					sb.setPage(maxpage);
 					session.setAttribute("status", sb);
-					bookListCreate(request,sb);
 				}
+				bookListCreate(request,sb);
 				jsp = "/list.jsp";
+			//タイトル押下時の処理
+			}else if(title != null) {
+//				CreateTwintter twintter = new CreateTwintter();
+//				twintter.execute(request);
+//				SearchBook search = new SearchBook();
+//				search.execute(request, user.getId());				
+				jsp = "/details.jsp";
 			}else {
 				//エラーページ遷移
 				request.setAttribute("returnjsp", "list");
 				jsp = "/error.jsp";
 			}
-			jsp = "/list.jsp";
+			
 			ServletContext context = getServletContext();
 			RequestDispatcher rd = context.getRequestDispatcher(jsp);
 			rd.forward(request, response);
