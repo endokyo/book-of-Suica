@@ -37,43 +37,42 @@ public class Recommendation extends HttpServlet {
 	 */
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		HttpSession session = request.getSession(true);
+		HttpSession session = request.getSession(false);
 		UserBean user = (UserBean) session.getAttribute("user");
 		CreateList createlist = new CreateList();
 		String jsp;
-		user = new UserBean();
-		user.setId(1);
-		user.setName("user01");
-		user.setPassword("pass01");
-		session.setAttribute("user", user);
-		StatusBean sb =new StatusBean();
-		sb.setTodaygenre("アクション");
-		sb.setTodaygenreid(1);
-		sb.setGenreid(0);
-		sb.setKeyword(" ");
-		sb.setPage(1);
-		sb.setNowsort("登録");
-		
-		session.setAttribute("status", sb);
+//		user = new UserBean();
+//		user.setId(1);
+//		user.setName("user01");
+//		user.setPassword("pass01");
+//		session.setAttribute("user", user);
+//		StatusBean sb =new StatusBean();
+//		sb.setTodaygenre("アクション");
+//		sb.setTodaygenreid(1);
+//		sb.setGenreid(0);
+//		sb.setKeyword(" ");
+//		sb.setPage(1);
+//		sb.setNowsort("登録");
+//		
+//		session.setAttribute("status", sb);
 		
 		
 		//ログインされてなければログインページに飛ぶ
-		//if(user == null) {
-			//jsp = "/login.jsp";
-		//}else {
+		if(user == null) {
+			jsp = "/login.jsp";
+		}else {
 			//書籍一覧を作成
 			try {
-				
 				createlist.execute(request);
 				request.setAttribute("message", "お気に入りの書籍を見つけよう！！");
-				jsp = "/recommendation.jsp";
+				jsp = "/list.jsp";
 			}catch (Exception e){
 				e.printStackTrace();
 				request.setAttribute("errormessage", "ログイン画面に戻って下さい");	//エラーメッセージ入れる
 				request.setAttribute("returnjsp", "list"); 
 				jsp = "/error.jsp";
 			}
-		//}
+		}
 		ServletContext context = getServletContext();
 		RequestDispatcher rd = context.getRequestDispatcher(jsp);
 		rd.forward(request, response);
@@ -91,7 +90,7 @@ public class Recommendation extends HttpServlet {
 		String sortname = request.getParameter("sortname");
 		String title = request.getParameter("title");
 		//String keyword = (String)request.getAttribute("keyword");
-		String jsp;
+		String jsp = "error.jsp";
 		
 		
 		try {
@@ -111,7 +110,7 @@ public class Recommendation extends HttpServlet {
 				bookListCreate(request,sb);
 				request.setAttribute("message", "お気に入りの書籍を見つけよう！！");
 				session.setAttribute("status", sb);
-				jsp = "/list.jsp";
+				jsp = "/recommend.jsp";
 				
 			}else if(button != null) {
 				//お気に入り登録ボタン
@@ -156,7 +155,7 @@ public class Recommendation extends HttpServlet {
 					session.setAttribute("status", sb);
 				}
 				bookListCreate(request,sb);
-				jsp = "/list.jsp";
+				jsp = "/recommend.jsp";
 			//タイトル押下時の処理
 			}else if(title != null) {
 //				CreateTwintter twintter = new CreateTwintter();
@@ -167,12 +166,7 @@ public class Recommendation extends HttpServlet {
 			}else {
 				//エラーページ遷移
 				request.setAttribute("returnjsp", "list");
-				jsp = "/error.jsp";
 			}
-			
-			ServletContext context = getServletContext();
-			RequestDispatcher rd = context.getRequestDispatcher(jsp);
-			rd.forward(request, response);
 		}catch(SQLException e) {
 			e.printStackTrace();
 		} catch (ClassNotFoundException e) {
@@ -182,6 +176,9 @@ public class Recommendation extends HttpServlet {
 		}finally {
 			bdao.close();
 		}
+		ServletContext context = getServletContext();
+		RequestDispatcher rd = context.getRequestDispatcher(jsp);
+		rd.forward(request, response);
 	}
 	
 	//選択されたソート順でソートするメソッド
