@@ -22,7 +22,6 @@ import service.CreateFavoriteCount;
 import service.CreateList;
 import service.CreateTwintterCount;
 import service.DeleteFavorite;
-import service.SearchBook;
 
 
 
@@ -38,14 +37,30 @@ public class List extends HttpServlet {
 	 */
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		HttpSession session = request.getSession(false);
+		HttpSession session = request.getSession(true);
 		UserBean user = (UserBean) session.getAttribute("user");
 		CreateList createlist = new CreateList();
 		String jsp;
+		user = new UserBean();
+		user.setId(1);
+		user.setName("user01");
+		user.setPassword("pass01");
+		session.setAttribute("user", user);
+		StatusBean sb =new StatusBean();
+		sb.setTodaygenre("アクション");
+		sb.setTodaygenreid(1);
+		sb.setGenreid(0);
+		sb.setKeyword(" ");
+		sb.setPage(1);
+		sb.setNowsort("登録");
+		
+		session.setAttribute("status", sb);
+		
+		
 		//ログインされてなければログインページに飛ぶ
-		if(user == null) {
-			jsp = "/login.jsp";
-		}else {
+		//if(user == null) {
+			//jsp = "/login.jsp";
+		//}else {
 			//書籍一覧を作成
 			try {
 				createlist.execute(request);
@@ -57,8 +72,7 @@ public class List extends HttpServlet {
 				request.setAttribute("returnjsp", "list"); 
 				jsp = "/error.jsp";
 			}
-		}
-		jsp = "/list.jsp";
+		//}
 		ServletContext context = getServletContext();
 		RequestDispatcher rd = context.getRequestDispatcher(jsp);
 		rd.forward(request, response);
@@ -71,12 +85,12 @@ public class List extends HttpServlet {
 		HttpSession session = request.getSession(false);
 		UserBean user = (UserBean) session.getAttribute("user");
 		StatusBean sb = (StatusBean) session.getAttribute("status");
-		FavoriteBean fb = (FavoriteBean) request.getAttribute("favoritelist");
 		BookDao bdao = null;
-		String button = (String)request.getAttribute("button");
-		String sortname = (String)request.getAttribute("sortname");
+		String button = request.getParameter("button");
+		String sortname = request.getParameter("sortname");
 		//String keyword = (String)request.getAttribute("keyword");
 		String jsp;
+		int bookid = Integer.parseInt(request.getParameter("bookid"));
 		
 		try {
 			bdao = new BookDao();
@@ -102,10 +116,10 @@ public class List extends HttpServlet {
 					DeleteFavorite df = new DeleteFavorite();
 					df.execute(request);
 				}else if(button.equals("true")){
+					FavoriteBean fb = new FavoriteBean();
+					fb.setUser_id(user.getId());
+					fb.setBook_id(bookid);
 					AddFavorite af = new AddFavorite();
-					SearchBook searchbook = new SearchBook();
-					searchbook.execute(request,user.getId());
-					request.set()
 					af.execute(fb);
 				//ページ戻る/進むボタン
 				}else if(button.equals("top")){
