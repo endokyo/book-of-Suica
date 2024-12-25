@@ -28,11 +28,11 @@ text-align:center;
 			<tb>
 				<p>
 					ジャンル：
-					<select name="genrename">
-						<option value="ALL" selected="selected">ALL</option>
+					<select name="genreid">
+						<option value="0" selected="selected">ALL</option>
 	
 						<c:forEach var="genre" items="${requestScope.genrelist }">
-							<option value="${genre.genre}"><c:out value="${genre.genre}" /></option>
+							<option value="${genre.id}"><c:out value="${genre.genre}" /></option>
 						</c:forEach>
 					</select>
 				</p>
