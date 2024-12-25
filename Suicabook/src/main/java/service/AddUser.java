@@ -16,9 +16,8 @@ public class AddUser {
 			dao = new UserDao();
 			//すべての項目が入力されている場合
 			if (name != null && !name.isEmpty() && pass != null && !pass.isEmpty() && repass != null && !repass.isEmpty()) {
-				UserBean bean = dao.searchUser(name);
 				//データベース上に入力されたユーザー名がなかった場合
-				if (bean.getName() == null) {
+				if (dao.searchUser(name) == false) {
 					//入力されたパスワードと確認用パスワードが同じ場合
 					if (pass.equals(repass)) {
 						UserBean newuser = new UserBean();
@@ -30,7 +29,7 @@ public class AddUser {
 						}else {
 							request.setAttribute("message", "データベースにてエラーが発生しました。管理者に問い合わせてください。");
 						}
-					} //入力されたパスワードと確認用パスワードが同じ場合
+					} //入力されたパスワードと確認用パスワードが違う場合
 					else {
 						request.setAttribute("message", "パスワードの入力内容が一致しません<br>もう一度パスワードを入力してください");
 					}
