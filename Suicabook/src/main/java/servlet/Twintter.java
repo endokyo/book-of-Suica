@@ -12,9 +12,9 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 import bean.BookBean;
-import bean.EvaluationBean;
+import bean.TwintterBean;
 import bean.UserBean;
-import service.AddEvaluation;
+import service.AddTwintter;
 
 /**
  * Servlet implementation class TaskEdit
@@ -50,28 +50,22 @@ public class Twintter extends HttpServlet {
 		request.setCharacterEncoding("UTF-8");
 		// リクエストパラメーターの値;
 		String jsp = null;
-
 		String content = request.getParameter("twintter_text");
 		String button = request.getParameter("button");
-		//String btn = request.getParameter("btn");
 
 		try {
 			if (button != null && !button.isEmpty()) {
 				if (button.equals("投稿")) {
 					if (content.length() <= 100) {
-
 						HttpSession se = request.getSession(false);
 						UserBean user = (UserBean) se.getAttribute("user");
 						BookBean book = (BookBean) se.getAttribute("book");
-				//---------------------------------------
-						EvaluationBean eb = (EvaluationBean) request.getAttribute("evaluationdetails");
-						EvaluationBean bean = new EvaluationBean();
+						TwintterBean bean = new TwintterBean();
 						bean.setUser_id(user.getId());
 						bean.setBook_id(book.getId());
-						bean.setEvaluation_score(eb.getEvaluation_score());
-						bean.setEvaluation_review(eb.getEvaluation_review());
-						AddEvaluation ae = new AddEvaluation();
-						ae.execute(bean);
+						bean.setTwintter_text(request.getParameter("twintter_text"));
+						AddTwintter at = new AddTwintter();
+						at.execute(bean);
 						jsp = "/detail.jsp";
 					} else {
 						request.setAttribute("errormessage", "コメントが100文字を超過しています。");
@@ -90,13 +84,14 @@ public class Twintter extends HttpServlet {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			request.setAttribute("message", "エラーが発生しました。評価入力画面に戻ります。");
+			request.setAttribute("message", "エラーが発生しました。コメント入力画面に戻ります。");
 			jsp = "/error.jsp";
 			request.setAttribute("returnjsp", "twintter");
 		}
+
 		// JSP への転送
-		if (jsp.equals("/booklist.jsp")) {
-			response.sendRedirect("http://localhost:8080/Suicabook/list"); //リダイレクトでdoGetを呼び出す
+		if (jsp.equals("/detail.jsp")) {
+			response.sendRedirect("http://localhost:8080/Suicabook/detail"); //リダイレクトでdoGetを呼び出す
 		} else {
 			ServletContext context = request.getServletContext();
 			RequestDispatcher dispatcher = context.getRequestDispatcher(jsp);

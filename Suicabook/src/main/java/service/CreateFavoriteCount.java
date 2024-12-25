@@ -28,7 +28,8 @@ public class CreateFavoriteCount {
 				list = dao.getBookListSortByFavorite(ub,sb.getKeyword(),sb.getGenreid());
 			}else {				//検索ワード、All
 				list = dao.getBookListSortByFavorite(ub,sb.getKeyword());
-			}	
+			}
+			sb.setMaxpage(list.size()/20);
 			//一覧表示用に、ソートした書籍一覧から20冊取得する
 			ArrayList<BookBean> page = new ArrayList<>();
 			for(int i = (20*(pagecount -1) +1); i <= 20*pagecount +1; i++) {
@@ -38,6 +39,7 @@ public class CreateFavoriteCount {
 						break;
 					}
 			}
+			session.setAttribute("status",sb);
 			request.setAttribute("booklist", page);
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();

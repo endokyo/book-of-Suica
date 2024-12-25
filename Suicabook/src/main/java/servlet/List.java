@@ -12,13 +12,16 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
+import bean.FavoriteBean;
 import bean.StatusBean;
 import bean.UserBean;
 import dao.BookDao;
+import service.AddFavorite;
 import service.CreateAverage;
 import service.CreateFavoriteCount;
 import service.CreateList;
 import service.CreateTwintterCount;
+import service.DeleteFavorite;
 
 
 
@@ -34,14 +37,30 @@ public class List extends HttpServlet {
 	 */
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		HttpSession session = request.getSession(false);
+		HttpSession session = request.getSession(true);
 		UserBean user = (UserBean) session.getAttribute("user");
 		CreateList createlist = new CreateList();
 		String jsp;
+		user = new UserBean();
+		user.setId(1);
+		user.setName("user01");
+		user.setPassword("pass01");
+		session.setAttribute("user", user);
+		StatusBean sb =new StatusBean();
+		sb.setTodaygenre("アクション");
+		sb.setTodaygenreid(1);
+		sb.setGenreid(0);
+		sb.setKeyword(" ");
+		sb.setPage(1);
+		sb.setNowsort("登録");
+		
+		session.setAttribute("status", sb);
+		
+		
 		//ログインされてなければログインページに飛ぶ
-		if(user == null) {
-			jsp = "/login.jsp";
-		}else {
+		//if(user == null) {
+			//jsp = "/login.jsp";
+		//}else {
 			//書籍一覧を作成
 			try {
 				createlist.execute(request);
@@ -53,8 +72,7 @@ public class List extends HttpServlet {
 				request.setAttribute("returnjsp", "list"); 
 				jsp = "/error.jsp";
 			}
-		}
-		jsp = "/list.jsp";
+		//}
 		ServletContext context = getServletContext();
 		RequestDispatcher rd = context.getRequestDispatcher(jsp);
 		rd.forward(request, response);
@@ -64,19 +82,20 @@ public class List extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		HttpSession session = request.getSession(false);
 		UserBean user = (UserBean) session.getAttribute("user");
 		StatusBean sb = (StatusBean) session.getAttribute("status");
 		BookDao bdao = null;
-		String button = (String)request.getAttribute("button");
-		String sortname = (String)request.getAttribute("sortname");
-		String keyword = (String)request.getAttribute("keyword");
+		String button = request.getParameter("button");
+		String sortname = request.getParameter("sortname");
+		//String keyword = (String)request.getAttribute("keyword");
 		String jsp;
+		int bookid = Integer.parseInt(request.getParameter("bookid"));
 		
 		try {
 			bdao = new BookDao();
 			if(sortname != null) {
+				//ソート順毎の処理
 				if(sortname.equals("regist")) {
 					CreateList cl =new CreateList();
 					cl.execute(request);
@@ -92,16 +111,25 @@ public class List extends HttpServlet {
 				}
 				
 			}else if(button != null) {
+				//お気に入り登録ボタン
 				if(button.equals("false")) {
-					
-					
+					DeleteFavorite df = new DeleteFavorite();
+					df.execute(request);
 				}else if(button.equals("true")){
-					
-					
+					FavoriteBean fb = new FavoriteBean();
+					fb.setUser_id(user.getId());
+					fb.setBook_id(bookid);
+					AddFavorite af = new AddFavorite();
+					af.execute(fb);
+				//ページ戻る/進むボタン
 				}else if(button.equals("top")){
-					
+					sb.setPage(1);
+					session.setAttribute("status", sb);
 				}else if(button.equals("back")){	
-				
+					int nowpage = sb.getPage();
+					nowpage--;
+					sb.setPage(nowpage);
+					session.setAttribute("status", sb);
 				}else if(button.equals("next")){
 					int nowpage = sb.getPage();
 					nowpage++;
@@ -109,10 +137,14 @@ public class List extends HttpServlet {
 					session.setAttribute("status", sb);
 					bookListCreate(request,sb);
 				}else if(button.equals("last")){
-					
+					int maxpage = sb.getMaxpage();
+					sb.setPage(maxpage);
+					session.setAttribute("status", sb);
+					bookListCreate(request,sb);
 				}
 				jsp = "/list.jsp";
 			}else {
+				//エラーページ遷移
 				request.setAttribute("returnjsp", "list");
 				jsp = "/error.jsp";
 			}
@@ -131,6 +163,7 @@ public class List extends HttpServlet {
 		}
 	}
 	
+	//選択されたソート順でソートするメソッド
 	public void bookListCreate(HttpServletRequest request,StatusBean sb)throws Exception {
 		if(sb.getNowsort().equals("登録")) {
 			CreateList cl = new CreateList();
