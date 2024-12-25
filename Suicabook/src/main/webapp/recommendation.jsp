@@ -56,81 +56,89 @@ text-align:center;
 		</form>
 		
 		<%--書籍一覧テーブル --%>
-		<table border="1">
+	<table border="1">
+		<tr>
+			<th>表紙</th>
+			<th>タイトル</th>
+			<th>評価件数</th>
+			<th>評価平均</th>
+			<th>コメント数</th>
+			<th>お気に入り数</th>
+			<th>お気に入り登録</th>
+		</tr>
+
+		<c:forEach var="book" items="${requestScope.booklist }">
 			<tr>
-				<th>表紙</th>
-				<th>タイトル</th>
-				<th>ジャンル</th>
-				<th>評価平均</th>
-				<th>コメント数</th>
-				<th>お気に入り数</th>
-				<th>お気に入り登録</th>
+				<td><img src="img/${book.img }" width="128" height="96"
+					alt="${book.title } "></td>
+				<form action="list" method="post">
+					<td><input type="submit" value="${book.title }" /></td> <input
+						type="hidden" name="title" value="${book.id }">
+				</form>
+				<td><c:out value="${book.avecount }" /></td>
+				<td><c:out value="${book.average }" /></td>
+				<td><c:out value="${book.twicount }" /></td>
+				<td><c:out value="${book.favcount }" /></td>
+				<td>
+					<form action="list" method="post">
+						<c:choose>
+							<c:when test="${book.favorite == true}">
+								<input type="submit" value="★">
+								<input type="hidden" name="button" value="false">
+								<input type="hidden" name="favorite_id"
+									value="${book.favorite_id }">
+							</c:when>
+							<c:otherwise>
+								<input type="submit" value="☆">
+								<input type="hidden" name="button" value="true">
+								<input type="hidden" name="bookid" value="${book.id }">
+							</c:otherwise>
+						</c:choose>
+					</form>
+				</td>
 			</tr>
-			
-			<c:forEach var="book" items="${requestScope.booklist }">
-				<tr>
-					<td><img src="${book.img}" width="80" height="120" alt="${book.img}" /></td>
-					<td><c:out value="${book.title }"/></td>
-					<td><c:out value="${book.genre }"/></td>
-					<td><c:out value="${book.average }"/></td>
-					<td><c:out value="${book.twicount }"/></td>
-					<td><c:out value="${book.favcount }"/></td>
-					<td>
-						<form action="list" method="post">
-							<c:choose>
-								<c:when test="${book.favorite == true}">
-									<input type="submit" value="★">
-									<input type="hidden" name="button" value="false">
-								</c:when>
-								<c:otherwise>
-									<input type="submit" value="☆">
-									<input type="hiddun" name="button" value="true">
-								</c:otherwise>
-							</c:choose>
-						</form>
-					</td>
-				</tr>
-			</c:forEach>
-		</table>
-		
-		<%--ページ送りボタン --%>
-		<table>
-			<c:choose>
-				<c:when test="${sessionScope.page > 1}">
-					<%--最初のページ --%>
-					<td>
-						<form action="list" method="post">
-							<input type="submit" value="＜＜">
-							<input type="hidden" name="button" value="top">
-						</form>
-					</td>
-					<%--1ページ前 --%>
-					<td>
-						<form action="list" method="post">
-							<input type="submit" value="＜">
-							<input type="hidden" name="button" value="back">
-						</form>
-					</td>
-				</c:when>
-			</c:choose>
-			
-			<%--ページ数表示 --%>
-			<td>${sessionScope.page }</td>
+		</c:forEach>
+	</table>
+
+	<%--ページ送りボタン --%>
+	<table>
+		<c:if test="${sessionScope.status.page > 1}">
+			<%--最初のページ --%>
+			<td>
+				<form action="list" method="post">
+					<input type="submit" value="＜＜"> <input type="hidden"
+						name="button" value="top">
+				</form>
+			</td>
+			<%--1ページ前 --%>
+			<td>
+				<form action="list" method="post">
+					<input type="submit" value="＜"> <input type="hidden"
+						name="button" value="back">
+				</form>
+			</td>
+		</c:if>
+		<%--ページ数表示 --%>
+		<td><c:out value="${sessionScope.status.page }" />/<c:out
+				value="${sessionScope.status.maxpage }" /></td>
+		<c:if
+			test="${sessionScope.status.page < sessionScope.status.maxpage }">
 			<td>
 				<%--1ページ先 --%>
 				<form action="list" method="post">
-					<input type="submit" value="＞">
-					<input type="hidden" name="button" value="next">
+					<input type="submit" value="＞"> <input type="hidden"
+						name="button" value="next">
 				</form>
 			</td>
 			<td>
 				<%--最後のページ --%>
 				<form action="list" method="post">
-					<input type="submit" value="＞＞">
-					<input type="hidden" name="button" value="last">
+					<input type="submit" value="＞＞"> <input type="hidden"
+						name="button" value="last">
 				</form>
 			</td>
-		</table>
+		</c:if>
+	</table>
 	</main>
 	<footer>
 		<jsp:include page="footer.jsp" />
