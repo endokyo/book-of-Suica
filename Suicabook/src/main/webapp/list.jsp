@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="jakarta.tags.core"%>
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -11,7 +12,7 @@
 	<h2>本日のおすすめ</h2>
 	<%--おすすめ画面遷移 --%>
 	<form action="recommend" method="get">
-		<input type="submit" value="${sessionScope.status }">
+		<input type="submit" value="${sessionScope.status.todaygenre }">
 	</form>
 	<h1>書籍一覧</h1>
 	
@@ -36,7 +37,7 @@
 				<%--検索クリアボタン --%>
 				<form action="list" method="get">
 					<input type="submit" value="検索クリア">
-					<input type="hiddun" name="button" value="clear">
+					<input type="hidden" name="button" value="clear">
 				</form>
 			</td>
 			
@@ -44,14 +45,14 @@
 				<%--検索画面遷移 --%>
 				<form action="search" method="get">
 					<input type="submit" value="検索">
-					<input type="hiddun" name="button" value="search">
+					<input type="hidden" name="button" value="search">
 				</form>
 			</td>
 		</tr>
 	</table>
 	
 	<%--書籍一覧テーブル --%>
-	<table>
+	<table border="1">
 		<tr>
 			<th>表紙</th>
 			<th>タイトル</th>
@@ -62,7 +63,7 @@
 			<th>お気に入り登録</th>
 		</tr>
 		
-		<c:foreach var="book" items="${requestScope.booklist }">
+		<c:forEach var="book" items="${requestScope.booklist }">
 			<tr>
 				<td><c:out value="${book.img }"/></td>
 				<td><c:out value="${book.title }"/></td>
@@ -72,25 +73,27 @@
 				<td><c:out value="${book.favcount }"/></td>
 				<td>
 					<form action="list" method="post">
-						<c:chose>
+						<c:choose>
 							<c:when test="${book.favorite == true}">
 								<input type="submit" value="★">
 								<input type="hidden" name="button" value="false">
+								<input type="hidden" name="favorite_id" value="${book.favorite_id }">
 							</c:when>
 							<c:otherwise>
 								<input type="submit" value="☆">
-								<input type="hiddun" name="button" value="true">
+								<input type="hidden" name="button" value="true">
+								<input type="hidden" name="bookid" value="${book.id }">
 							</c:otherwise>
-						</c:chose>
+						</c:choose>
 					</form>
 				</td>
 			</tr>
-		</c:foreach>
+			</c:forEach>
 	</table>
 	
 	<%--ページ送りボタン --%>
 	<table>
-		<c:chose>
+		<c:choose>
 			<c:when test="${sessionScope.page > 1}">
 				<%--最初のページ --%>
 				<td>
@@ -107,7 +110,7 @@
 					</form>
 				</td>
 			</c:when>
-		</c:chose>
+		</c:choose>
 		<%--ページ数表示 
 		<%
 			ArrayList<BookBean> booklist = (ArrayList<>)request.getAttribute("booklist");

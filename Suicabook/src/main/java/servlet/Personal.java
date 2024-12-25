@@ -89,6 +89,7 @@ public class Personal extends HttpServlet {
 				delete.execute(request);
 				//お気に入り一覧と評価した書籍一覧を作成
 				createPage(request, user);
+				request.setAttribute("userid", user.getId());
 				jsp = "/personal.jsp";
 			}
 			//評価編集の場合
@@ -99,6 +100,7 @@ public class Personal extends HttpServlet {
 				eva.execute(request, user.getId(),id);
 				SearchBook search = new SearchBook();
 				search.execute(request, id);
+				request.setAttribute("who", "personal");
 				request.setAttribute("mode", 2);
 				jsp = "/evaluation.jsp";
 			}
