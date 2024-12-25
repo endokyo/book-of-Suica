@@ -16,6 +16,7 @@ public class AddUser {
 			dao = new UserDao();
 			//すべての項目が入力されている場合
 			if (name != null && !name.isEmpty() && pass != null && !pass.isEmpty() && repass != null && !repass.isEmpty()) {
+
 				//データベース上に入力されたユーザー名がなかった場合
 				if (dao.searchUser(name) == false) {
 					//入力されたパスワードと確認用パスワードが同じ場合

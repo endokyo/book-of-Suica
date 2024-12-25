@@ -37,30 +37,30 @@ public class List extends HttpServlet {
 	 */
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		HttpSession session = request.getSession(true);
+		HttpSession session = request.getSession(false);
 		UserBean user = (UserBean) session.getAttribute("user");
 		CreateList createlist = new CreateList();
 		String jsp;
-		user = new UserBean();
-		user.setId(1);
-		user.setName("user01");
-		user.setPassword("pass01");
-		session.setAttribute("user", user);
-		StatusBean sb =new StatusBean();
-		sb.setTodaygenre("アクション");
-		sb.setTodaygenreid(1);
-		sb.setGenreid(0);
-		sb.setKeyword(" ");
-		sb.setPage(1);
-		sb.setNowsort("登録");
-		
-		session.setAttribute("status", sb);
+//		user = new UserBean();
+//		user.setId(1);
+//		user.setName("user01");
+//		user.setPassword("pass01");
+//		session.setAttribute("user", user);
+//		StatusBean sb =new StatusBean();
+//		sb.setTodaygenre("アクション");
+//		sb.setTodaygenreid(1);
+//		sb.setGenreid(0);
+//		sb.setKeyword(" ");
+//		sb.setPage(1);
+//		sb.setNowsort("登録");
+//		
+//		session.setAttribute("status", sb);
 		
 		
 		//ログインされてなければログインページに飛ぶ
-		//if(user == null) {
-			//jsp = "/login.jsp";
-		//}else {
+		if(user == null) {
+			jsp = "/login.jsp";
+		}else {
 			//書籍一覧を作成
 			try {
 				createlist.execute(request);
@@ -72,7 +72,7 @@ public class List extends HttpServlet {
 				request.setAttribute("returnjsp", "list"); 
 				jsp = "/error.jsp";
 			}
-		//}
+		}
 		ServletContext context = getServletContext();
 		RequestDispatcher rd = context.getRequestDispatcher(jsp);
 		rd.forward(request, response);
@@ -90,7 +90,7 @@ public class List extends HttpServlet {
 		String sortname = request.getParameter("sortname");
 		String title = request.getParameter("title");
 		//String keyword = (String)request.getAttribute("keyword");
-		String jsp;
+		String jsp = "error.jsp";
 		
 		
 		try {
@@ -166,12 +166,7 @@ public class List extends HttpServlet {
 			}else {
 				//エラーページ遷移
 				request.setAttribute("returnjsp", "list");
-				jsp = "/error.jsp";
 			}
-			
-			ServletContext context = getServletContext();
-			RequestDispatcher rd = context.getRequestDispatcher(jsp);
-			rd.forward(request, response);
 		}catch(SQLException e) {
 			e.printStackTrace();
 		} catch (ClassNotFoundException e) {
@@ -181,6 +176,9 @@ public class List extends HttpServlet {
 		}finally {
 			bdao.close();
 		}
+		ServletContext context = getServletContext();
+		RequestDispatcher rd = context.getRequestDispatcher(jsp);
+		rd.forward(request, response);
 	}
 	
 	//選択されたソート順でソートするメソッド

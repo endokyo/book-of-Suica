@@ -85,8 +85,7 @@ text-align:center;
 							<c:when test="${book.favorite == true}">
 								<input type="submit" value="★">
 								<input type="hidden" name="button" value="false">
-								<input type="hidden" name="favorite_id"
-									value="${book.favorite_id }">
+								<input type="hidden" name="favorite_id" value="${book.favorite_id }">
 							</c:when>
 							<c:otherwise>
 								<input type="submit" value="☆">
