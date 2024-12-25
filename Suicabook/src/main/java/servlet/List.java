@@ -12,13 +12,17 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
+import bean.FavoriteBean;
 import bean.StatusBean;
 import bean.UserBean;
 import dao.BookDao;
+import service.AddFavorite;
 import service.CreateAverage;
 import service.CreateFavoriteCount;
 import service.CreateList;
 import service.CreateTwintterCount;
+import service.DeleteFavorite;
+import service.SearchBook;
 
 
 
@@ -64,19 +68,20 @@ public class List extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		HttpSession session = request.getSession(false);
 		UserBean user = (UserBean) session.getAttribute("user");
 		StatusBean sb = (StatusBean) session.getAttribute("status");
+		FavoriteBean fb = (FavoriteBean) request.getAttribute("favoritelist");
 		BookDao bdao = null;
 		String button = (String)request.getAttribute("button");
 		String sortname = (String)request.getAttribute("sortname");
-		String keyword = (String)request.getAttribute("keyword");
+		//String keyword = (String)request.getAttribute("keyword");
 		String jsp;
 		
 		try {
 			bdao = new BookDao();
 			if(sortname != null) {
+				//ソート順毎の処理
 				if(sortname.equals("regist")) {
 					CreateList cl =new CreateList();
 					cl.execute(request);
@@ -92,16 +97,25 @@ public class List extends HttpServlet {
 				}
 				
 			}else if(button != null) {
+				//お気に入り登録ボタン
 				if(button.equals("false")) {
-					
-					
+					DeleteFavorite df = new DeleteFavorite();
+					df.execute(request);
 				}else if(button.equals("true")){
-					
-					
+					AddFavorite af = new AddFavorite();
+					SearchBook searchbook = new SearchBook();
+					searchbook.execute(request,user.getId());
+					request.set()
+					af.execute(fb);
+				//ページ戻る/進むボタン
 				}else if(button.equals("top")){
-					
+					sb.setPage(1);
+					session.setAttribute("status", sb);
 				}else if(button.equals("back")){	
-				
+					int nowpage = sb.getPage();
+					nowpage--;
+					sb.setPage(nowpage);
+					session.setAttribute("status", sb);
 				}else if(button.equals("next")){
 					int nowpage = sb.getPage();
 					nowpage++;
@@ -109,10 +123,14 @@ public class List extends HttpServlet {
 					session.setAttribute("status", sb);
 					bookListCreate(request,sb);
 				}else if(button.equals("last")){
-					
+					int maxpage = sb.getMaxpage();
+					sb.setPage(maxpage);
+					session.setAttribute("status", sb);
+					bookListCreate(request,sb);
 				}
 				jsp = "/list.jsp";
 			}else {
+				//エラーページ遷移
 				request.setAttribute("returnjsp", "list");
 				jsp = "/error.jsp";
 			}
@@ -131,6 +149,7 @@ public class List extends HttpServlet {
 		}
 	}
 	
+	//選択されたソート順でソートするメソッド
 	public void bookListCreate(HttpServletRequest request,StatusBean sb)throws Exception {
 		if(sb.getNowsort().equals("登録")) {
 			CreateList cl = new CreateList();

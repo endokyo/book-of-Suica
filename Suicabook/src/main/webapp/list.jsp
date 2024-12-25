@@ -76,10 +76,12 @@
 							<c:when test="${book.favorite == true}">
 								<input type="submit" value="★">
 								<input type="hidden" name="button" value="false">
+								<input type="hidden" name="bookid" value="${book.id }">
 							</c:when>
 							<c:otherwise>
 								<input type="submit" value="☆">
 								<input type="hiddun" name="button" value="true">
+								<input type="hidden" name="bookid" value="${book.id }">
 							</c:otherwise>
 						</c:chose>
 					</form>
