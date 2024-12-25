@@ -68,7 +68,7 @@ public class List extends HttpServlet {
 				jsp = "/list.jsp";
 			}catch (Exception e){
 				e.printStackTrace();
-				request.setAttribute("errormessage", "");	//エラーメッセージ入れる
+				request.setAttribute("errormessage", "ログイン画面に戻って下さい");	//エラーメッセージ入れる
 				request.setAttribute("returnjsp", "list"); 
 				jsp = "/error.jsp";
 			}
@@ -91,25 +91,25 @@ public class List extends HttpServlet {
 		String title = request.getParameter("title");
 		//String keyword = (String)request.getAttribute("keyword");
 		String jsp;
-		int bookid = Integer.parseInt(request.getParameter("bookid"));
+		
 		
 		try {
 			bdao = new BookDao();
 			if(sortname != null) {
 				//ソート順毎の処理
 				if(sortname.equals("regist")) {
-					CreateList cl =new CreateList();
-					cl.execute(request);
+					sb.setNowsort("登録");
 				}else if(sortname.equals("average")) {
-					CreateAverage ca =new CreateAverage();
-					ca.execute(request);
+					sb.setNowsort("評価");
 				}else if(sortname.equals("twinter")) {
-					CreateTwintterCount ct =new CreateTwintterCount();
-					ct.execute(request);
+					sb.setNowsort("コメント数");
 				}else if(sortname.equals("favorite")) {
-					CreateFavoriteCount cf =new CreateFavoriteCount();
-					cf.execute(request);
+					sb.setNowsort("お気に入り数");
 				}
+				sb.setPage(1);
+				bookListCreate(request,sb);
+				request.setAttribute("message", "お気に入りの書籍を見つけよう！！");
+				session.setAttribute("status", sb);
 				jsp = "/list.jsp";
 				
 			}else if(button != null) {
@@ -118,6 +118,7 @@ public class List extends HttpServlet {
 					DeleteFavorite df = new DeleteFavorite();
 					df.execute(request);
 				}else if(button.equals("true")){
+					int bookid = Integer.parseInt(request.getParameter("bookid"));
 					FavoriteBean fb = new FavoriteBean();
 					fb.setUser_id(user.getId());
 					fb.setBook_id(bookid);
@@ -136,12 +137,16 @@ public class List extends HttpServlet {
 					session.setAttribute("status", sb);
 				}else if(button.equals("back")){	
 					int nowpage = sb.getPage();
-					nowpage--;
+					if(nowpage > 1) {
+						nowpage--;
+					}
 					sb.setPage(nowpage);
 					session.setAttribute("status", sb);
 				}else if(button.equals("next")){
 					int nowpage = sb.getPage();
-					nowpage++;
+					if(nowpage < sb.getMaxpage()){
+						nowpage++;
+					}
 					sb.setPage(nowpage);
 					session.setAttribute("status", sb);
 				}else if(button.equals("last")){
