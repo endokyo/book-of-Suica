@@ -15,13 +15,12 @@ import bean.BookBean;
 import bean.EvaluationBean;
 import bean.UserBean;
 import service.AddEvaluation;
-import service.UpdateEvaluation;
 
 /**
  * Servlet implementation class TaskEdit
  */
-@WebServlet("/evaluation")
-public class Evaluation extends HttpServlet {
+@WebServlet("/twintter")
+public class Twintter extends HttpServlet {
 	public static final long serialVersionUID = 1L;
 
 	/**
@@ -36,7 +35,7 @@ public class Evaluation extends HttpServlet {
 		if (user == null) {
 			jsp = "/login.jsp";
 		} else {
-			jsp = "/evaluation.jsp";
+			jsp = "/twintter.jsp";
 		}
 		// JSP への転送
 		ServletContext context = getServletContext();
@@ -52,61 +51,48 @@ public class Evaluation extends HttpServlet {
 		// リクエストパラメーターの値;
 		String jsp = null;
 
-		int score = Integer.parseInt(request.getParameter("evaluation_score"));
-		String content = request.getParameter("evaluation_content");
+		String content = request.getParameter("twintter_text");
 		String button = request.getParameter("button");
-		String btn = request.getParameter("btn");
+		//String btn = request.getParameter("btn");
 
 		try {
 			if (button != null && !button.isEmpty()) {
 				if (button.equals("投稿")) {
-					if (content.length() <= 500) {
+					if (content.length() <= 100) {
+
 						HttpSession se = request.getSession(false);
-						if (btn.equals("編集")) { 				//ユーザー個人画面から既に入力した評価を編集する場合
-							EvaluationBean eb = (EvaluationBean) request.getAttribute("evaluationdetails");
-							EvaluationBean bean = new EvaluationBean();
-							String id = request.getParameter("evaluation_id");
-							bean.setId(Integer.parseInt(id));
-							bean.setEvaluation_score(eb.getEvaluation_score());
-							bean.setEvaluation_review(eb.getEvaluation_review());
-							UpdateEvaluation ue = new UpdateEvaluation();
-							ue.execute(bean);
-							jsp = "/personal.jsp"; 		//←書籍詳細画面から評価入力(編集)した際の処理が不十分
-						} else { 								//書籍詳細画面から初めて評価を入力する場合
-							UserBean user = (UserBean) se.getAttribute("user");
-							BookBean book = (BookBean) se.getAttribute("book");
-							EvaluationBean eb = (EvaluationBean) request.getAttribute("evaluationdetails");
-							EvaluationBean bean = new EvaluationBean();
-							bean.setUser_id(user.getId());
-							bean.setBook_id(book.getId());
-							bean.setEvaluation_score(eb.getEvaluation_score());
-							bean.setEvaluation_review(eb.getEvaluation_review());
-							AddEvaluation ae = new AddEvaluation();
-							ae.execute(bean);
-							jsp = "/detail.jsp";
-						}
+						UserBean user = (UserBean) se.getAttribute("user");
+						BookBean book = (BookBean) se.getAttribute("book");
+				//---------------------------------------
+						EvaluationBean eb = (EvaluationBean) request.getAttribute("evaluationdetails");
+						EvaluationBean bean = new EvaluationBean();
+						bean.setUser_id(user.getId());
+						bean.setBook_id(book.getId());
+						bean.setEvaluation_score(eb.getEvaluation_score());
+						bean.setEvaluation_review(eb.getEvaluation_review());
+						AddEvaluation ae = new AddEvaluation();
+						ae.execute(bean);
+						jsp = "/detail.jsp";
 					} else {
-						request.setAttribute("errormessage", "レビューが500文字を超過しています。");
+						request.setAttribute("errormessage", "コメントが100文字を超過しています。");
 						jsp = "/error.jsp";
-						request.setAttribute("returnjsp", "evaluation");
+						request.setAttribute("returnjsp", "twintter");
 					}
 				} else {
 					request.setAttribute("errormessage", "ボタンが押されませんでした。");
 					jsp = "/error.jsp";
-					request.setAttribute("returnjsp", "evaluation");
+					request.setAttribute("returnjsp", "twintter");
 				}
-			} else if (btn.equals("error")) {
-				jsp = "/evaluation.jsp";
 			} else {
 				request.setAttribute("errormessage", "エラーが発生しました。ボタンの入力が確認できませんでした。");
 				jsp = "/error.jsp";
-				request.setAttribute("returnjsp", "evaluation");
+				request.setAttribute("returnjsp", "twintter");
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			request.setAttribute("message", "エラーが発生しました。評価入力画面に戻ります。");
 			jsp = "/error.jsp";
-			request.setAttribute("returnjsp", "evaluation");
+			request.setAttribute("returnjsp", "twintter");
 		}
 		// JSP への転送
 		if (jsp.equals("/booklist.jsp")) {
