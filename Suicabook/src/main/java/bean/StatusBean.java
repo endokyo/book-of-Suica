@@ -2,7 +2,8 @@ package bean;
 import java.io.Serializable;
 
 public class StatusBean implements Serializable  {
-	private int todaygenre;	//おすすめのジャンルを保存
+	private String todaygenre;	//おすすめのジャンルを保存
+	private int todaygenreid;	//おすすめのジャンルを保存
 	private String keyword;	//検索ワードを保存
 	private String genre;	//検索ジャンルを保存
 	private String nowsort;	//現在のソート順を保存
@@ -10,11 +11,17 @@ public class StatusBean implements Serializable  {
 	private int maxpage;    //最大ページ数を保存する
 	private int genreid; 	//検索ジャンルIDを保存
 	
-	public int getTodaygenre() {
+	public String getTodaygenre() {
 		return todaygenre;
 	}
-	public void setTodaygenre(int todaygenre) {
+	public void setTodaygenre(String todaygenre) {
 		this.todaygenre = todaygenre;
+	}
+	public int getTodaygenreid() {
+		return todaygenreid;
+	}
+	public void setTodaygenreid(int todaygenreid) {
+		this.todaygenreid = todaygenreid;
 	}
 	public String getKeyword() {
 		return keyword;

@@ -28,16 +28,18 @@ public class CreateList {
 				list = dao.getBookListSortByRegist(ub,sb.getKeyword(),sb.getGenreid());
 			}else {				//検索ワード、All
 				list = dao.getBookListSortByRegist(ub,sb.getKeyword());
-			}	
+			}
+			sb.setMaxpage(list.size()/20);
 			//一覧表示用に、ソートした書籍一覧から20冊取得する
 			ArrayList<BookBean> page = new ArrayList<>();
-			for(int i = (20*(pagecount -1) +1); i <= 20*pagecount +1; i++) {
+			for(int i = (20*(pagecount -1)); i <= 20*pagecount - 1; i++) {
 					if(list.contains(list.get(i))) {
 						page.add(list.get(i));
 					}else {
 						break;
 					}
 			}
+			session.setAttribute("status",sb);
 			request.setAttribute("booklist", page);
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
