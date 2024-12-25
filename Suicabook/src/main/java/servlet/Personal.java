@@ -33,6 +33,7 @@ public class Personal extends HttpServlet {
 		HttpSession session = request.getSession(true);
 		UserBean user = (UserBean) session.getAttribute("user");
 		String jsp;
+		//ログインができるまで
 		user = new UserBean();
 		user.setId(1);
 		user.setName("user01");
@@ -47,6 +48,7 @@ public class Personal extends HttpServlet {
 			try {
 				//お気に入り一覧と評価した書籍一覧を作成
 				createPage(request, user);
+				request.setAttribute("username", user.getName());
 				request.setAttribute("userid", 1);
 				jsp = "/personal.jsp";
 			} catch (Exception e) {
@@ -89,7 +91,7 @@ public class Personal extends HttpServlet {
 				delete.execute(request);
 				//お気に入り一覧と評価した書籍一覧を作成
 				createPage(request, user);
-				request.setAttribute("userid", user.getId());
+				request.setAttribute("username", user.getName());
 				jsp = "/personal.jsp";
 			}
 			//評価編集の場合
