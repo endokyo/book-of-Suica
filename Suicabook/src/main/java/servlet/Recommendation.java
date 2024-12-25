@@ -66,7 +66,7 @@ public class Recommendation extends HttpServlet {
 				
 				createlist.execute(request);
 				request.setAttribute("message", "お気に入りの書籍を見つけよう！！");
-				jsp = "/recommend.jsp";
+				jsp = "/recommendation.jsp";
 			}catch (Exception e){
 				e.printStackTrace();
 				request.setAttribute("errormessage", "ログイン画面に戻って下さい");	//エラーメッセージ入れる
