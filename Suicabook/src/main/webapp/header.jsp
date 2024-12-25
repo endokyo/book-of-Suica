@@ -11,7 +11,7 @@
 		<table>
 			<tr>
 				<td>
-					<form action="home" method="get">
+					<form action="list" method="get">
 						<input type="submit" value="書籍一覧に戻る">
 					</form>
 				</td>
