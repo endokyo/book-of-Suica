@@ -88,6 +88,7 @@ public class List extends HttpServlet {
 		BookDao bdao = null;
 		String button = request.getParameter("button");
 		String sortname = request.getParameter("sortname");
+		String title = request.getParameter("title");
 		//String keyword = (String)request.getAttribute("keyword");
 		String jsp;
 		int bookid = Integer.parseInt(request.getParameter("bookid"));
@@ -109,6 +110,7 @@ public class List extends HttpServlet {
 					CreateFavoriteCount cf =new CreateFavoriteCount();
 					cf.execute(request);
 				}
+				jsp = "/list.jsp";
 				
 			}else if(button != null) {
 				//お気に入り登録ボタン
@@ -121,6 +123,13 @@ public class List extends HttpServlet {
 					fb.setBook_id(bookid);
 					AddFavorite af = new AddFavorite();
 					af.execute(fb);
+				//検索クリアボタン
+				}else if(button.equals("clear")){
+					sb.setGenreid(0);
+					sb.setKeyword(" ");
+					sb.setPage(1);
+					sb.setNowsort("登録");
+					session.setAttribute("status", sb);
 				//ページ戻る/進むボタン
 				}else if(button.equals("top")){
 					sb.setPage(1);
@@ -135,20 +144,26 @@ public class List extends HttpServlet {
 					nowpage++;
 					sb.setPage(nowpage);
 					session.setAttribute("status", sb);
-					bookListCreate(request,sb);
 				}else if(button.equals("last")){
 					int maxpage = sb.getMaxpage();
 					sb.setPage(maxpage);
 					session.setAttribute("status", sb);
-					bookListCreate(request,sb);
 				}
+				bookListCreate(request,sb);
 				jsp = "/list.jsp";
+			//タイトル押下時の処理
+			}else if(title != null) {
+//				CreateTwintter twintter = new CreateTwintter();
+//				twintter.execute(request);
+//				SearchBook search = new SearchBook();
+//				search.execute(request, user.getId());				
+				jsp = "/details.jsp";
 			}else {
 				//エラーページ遷移
 				request.setAttribute("returnjsp", "list");
 				jsp = "/error.jsp";
 			}
-			jsp = "/list.jsp";
+			
 			ServletContext context = getServletContext();
 			RequestDispatcher rd = context.getRequestDispatcher(jsp);
 			rd.forward(request, response);

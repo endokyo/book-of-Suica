@@ -35,7 +35,7 @@
 			
 			<td>
 				<%--検索クリアボタン --%>
-				<form action="list" method="get">
+				<form action="list" method="post">
 					<input type="submit" value="検索クリア">
 					<input type="hidden" name="button" value="clear">
 				</form>
@@ -65,12 +65,16 @@
 		
 		<c:forEach var="book" items="${requestScope.booklist }">
 			<tr>
-				<td><c:out value="${book.img }"/></td>
-				<td><c:out value="${book.title }"/></td>
+				<td><img src="img/${book.img }" width="128" height="96" alt="${book.title } "></td>
+				<form action="list" method="post">
+					<td><input type="submit" value="${book.title }"/></td>
+					<input type="hidden" name="title" value="${book.id }">
+				</form>
 				<td><c:out value="${book.genre }"/></td>
 				<td><c:out value="${book.average }"/></td>
 				<td><c:out value="${book.twicount }"/></td>
 				<td><c:out value="${book.favcount }"/></td>
+				<td><c:out value="${book.favorite_id }"/></td>
 				<td>
 					<form action="list" method="post">
 						<c:choose>
