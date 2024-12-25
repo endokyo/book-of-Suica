@@ -91,7 +91,7 @@ public class FavoriteDao {
 				bookbean.setGenre(rs.getString("genre_name"));
 				bookbean.setAverage(rs.getDouble("book_ave"));
 				bookbean.setAvecount(rs.getInt("book_avecount"));
-				bookbean.setTwicount(rs.getInt("book_comcount"));
+				bookbean.setTwicount(rs.getInt("book_twicount"));
 				bookbean.setFavcount(rs.getInt("book_favcount"));
 				bookbean.setFavorite(true);
 				list.add(bookbean);
