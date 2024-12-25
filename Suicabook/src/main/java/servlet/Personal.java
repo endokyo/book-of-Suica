@@ -103,6 +103,7 @@ public class Personal extends HttpServlet {
 				eva.execute(request, user.getId(),id);
 				SearchBook search = new SearchBook();
 				search.execute(request, id);
+				request.setAttribute("userid", 1);
 				request.setAttribute("who", "personal");
 				request.setAttribute("mode", 2);
 				jsp = "/evaluation.jsp";
