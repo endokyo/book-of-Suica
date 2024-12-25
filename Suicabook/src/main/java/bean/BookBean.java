@@ -12,6 +12,7 @@ public class BookBean {
 	private int twicount; //コメント数を保持
 	private int favcount; //お気に入り登録された回数を保持
 	private boolean favorite; //そのユーザーがお気に入り登録している書籍かどうかを保持
+	private int favorite_id; //お気に入りIDを保持
 	
 	public int getId() {
 		return id;
@@ -79,5 +80,10 @@ public class BookBean {
 	public void setFavorite(boolean favorite) {
 		this.favorite = favorite;
 	}
-	
+	public int getFavorite_id() {
+		return favorite_id;
+	}
+	public void setFavorite_id(int favorite_id) {
+		this.favorite_id = favorite_id;
+	}
 }

@@ -93,6 +93,7 @@ public class FavoriteDao {
 				bookbean.setAvecount(rs.getInt("book_avecount"));
 				bookbean.setTwicount(rs.getInt("book_twicount"));
 				bookbean.setFavcount(rs.getInt("book_favcount"));
+				bookbean.setFavorite_id(rs.getInt("favorite_id"));
 				bookbean.setFavorite(true);
 				list.add(bookbean);
 			}

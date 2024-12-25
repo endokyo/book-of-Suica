@@ -64,8 +64,8 @@ public class BookDao {
 				bb.setAverage(rs.getDouble("book_ave"));
 				bb.setTwicount(rs.getInt("book_twicount"));
 				bb.setFavcount(rs.getInt("book_favcount"));
-				int i = rs.getInt("favorite_id");
-				if (i > 0) {
+				bb.setFavorite_id(rs.getInt("favorite_id"));
+				if (bb.getFavorite_id() > 0) {
 					bb.setFavorite(true);
 				} else {
 					bb.setFavorite(false);
@@ -112,8 +112,8 @@ public class BookDao {
 				bb.setAverage(rs.getDouble("book_ave"));
 				bb.setTwicount(rs.getInt("book_twicount"));
 				bb.setFavcount(rs.getInt("book_favcount"));
-				int i = rs.getInt("favorite_id");
-				if (i > 0) {
+				bb.setFavorite_id(rs.getInt("favorite_id"));
+				if (bb.getFavorite_id() > 0) {
 					bb.setFavorite(true);
 				} else {
 					bb.setFavorite(false);
@@ -163,8 +163,8 @@ public class BookDao {
 				bb.setAverage(rs.getDouble("book_ave"));
 				bb.setTwicount(rs.getInt("book_twicount"));
 				bb.setFavcount(rs.getInt("book_favcount"));
-				int i = rs.getInt("favorite_id");
-				if (i > 0) {
+				bb.setFavorite_id(rs.getInt("favorite_id"));
+				if (bb.getFavorite_id() > 0) {
 					bb.setFavorite(true);
 				} else {
 					bb.setFavorite(false);
@@ -213,8 +213,8 @@ public class BookDao {
 				bb.setAverage(rs.getDouble("book_ave"));
 				bb.setTwicount(rs.getInt("book_twicount"));
 				bb.setFavcount(rs.getInt("book_favcount"));
-				int i = rs.getInt("favorite_id");
-				if (i > 0) {
+				bb.setFavorite_id(rs.getInt("favorite_id"));
+				if (bb.getFavorite_id() > 0) {
 					bb.setFavorite(true);
 				} else {
 					bb.setFavorite(false);
@@ -265,8 +265,8 @@ public class BookDao {
 				bb.setAverage(rs.getDouble("book_ave"));
 				bb.setTwicount(rs.getInt("book_twicount"));
 				bb.setFavcount(rs.getInt("book_favcount"));
-				int i = rs.getInt("favorite_id");
-				if (i > 0) {
+				bb.setFavorite_id(rs.getInt("favorite_id"));
+				if (bb.getFavorite_id() > 0) {
 					bb.setFavorite(true);
 				} else {
 					bb.setFavorite(false);
@@ -315,8 +315,8 @@ public class BookDao {
 				bb.setAverage(rs.getDouble("book_ave"));
 				bb.setTwicount(rs.getInt("book_twicount"));
 				bb.setFavcount(rs.getInt("book_favcount"));
-				int i = rs.getInt("favorite_id");
-				if (i > 0) {
+				bb.setFavorite_id(rs.getInt("favorite_id"));
+				if (bb.getFavorite_id() > 0) {
 					bb.setFavorite(true);
 				} else {
 					bb.setFavorite(false);
@@ -367,8 +367,8 @@ public class BookDao {
 				bb.setAverage(rs.getDouble("book_ave"));
 				bb.setTwicount(rs.getInt("book_twicount"));
 				bb.setFavcount(rs.getInt("book_favcount"));
-				int i = rs.getInt("favorite_id");
-				if (i > 0) {
+				bb.setFavorite_id(rs.getInt("favorite_id"));
+				if (bb.getFavorite_id() > 0) {
 					bb.setFavorite(true);
 				} else {
 					bb.setFavorite(false);
@@ -417,8 +417,8 @@ public class BookDao {
 				bb.setAverage(rs.getDouble("book_ave"));
 				bb.setTwicount(rs.getInt("book_twicount"));
 				bb.setFavcount(rs.getInt("book_favcount"));
-				int i = rs.getInt("favorite_id");
-				if (i > 0) {
+				bb.setFavorite_id(rs.getInt("favorite_id"));
+				if (bb.getFavorite_id() > 0) {
 					bb.setFavorite(true);
 				} else {
 					bb.setFavorite(false);
@@ -469,8 +469,8 @@ public class BookDao {
 				bb.setAverage(rs.getDouble("book_ave"));
 				bb.setTwicount(rs.getInt("book_twicount"));
 				bb.setFavcount(rs.getInt("book_favcount"));
-				int i = rs.getInt("favorite_id");
-				if (i > 0) {
+				bb.setFavorite_id(rs.getInt("favorite_id"));
+				if (bb.getFavorite_id() > 0) {
 					bb.setFavorite(true);
 				} else {
 					bb.setFavorite(false);
