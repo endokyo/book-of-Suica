@@ -92,6 +92,7 @@ public class Personal extends HttpServlet {
 				//お気に入り一覧と評価した書籍一覧を作成
 				createPage(request, user);
 				request.setAttribute("username", user.getName());
+				request.setAttribute("userid", user.getId());
 				jsp = "/personal.jsp";
 			}
 			//評価編集の場合
