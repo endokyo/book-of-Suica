@@ -11,7 +11,7 @@
 	<header>
 		<p><jsp:include page="header.jsp" /></p>
 		<p>
-			<c:out value="${requestScope.userid }" />
+			<h1><c:out value="${requestScope.username }" /></h1>
 		</p>
 	</header>
 	<main>
@@ -33,7 +33,7 @@
 						<c:if test="${requestScope.userid == sessionScope.user.id  }">
 							<td><form action="personal" method="post">
 									<input type="hidden" name="btn" value="cancel">
-									<input type="hidden" name="bookid" value="${book.id }">
+									<input type="hidden" name="favorite_id" value="${book.favorite_id }">
 									 <input type="submit" value="登録解除">
 								</form></td>
 						</c:if>
