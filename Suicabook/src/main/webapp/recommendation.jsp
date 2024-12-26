@@ -18,32 +18,28 @@ text-align:center;
 		<h2>
 			<p>おすすめ一覧</p>
 		</h2>
-		ジャンル：${sessionScope.status.genre}
+		ジャンル：${sessionScope.status.todaygenre}
 	</header>
 	<main>
 		<c:if test="${not empty requestScope.message}">
 			<p class="message">${requestScope.message}</p>
 		</c:if>
-
+		
 		<table border="1">
-			<th colspan="4">おすすめ度ランキング</th>
+			<th colspan="3">おすすめ度ランキング</th>
 			<c:forEach var="book" items="${requestScope.ranking}" varStatus="status">
-			<tr>
-				<td><c:out value="${status.index+1}" />位<td/>
-				<td>
-					<img src="${book.img}" width="80" height="120" alt="${book.img}" />
-				</td>
-				<td>
-					<a href="detail?id=${book.id}"><c:out value="${book.title}" />
-				</td>				
-			</tr>
+				<tr>
+					<td><c:out value="${status.index+1}位" escapeXml="true"/></td>
+					<td><img src="img/${book.img }" width="80" height="120" alt="img/${book.img}" /></td>
+					<td><a href="detail?id=${book.id}"><c:out value="${book.title}" /></td>
+				</tr>
 			</c:forEach>
 		</table>
 		<br>
 		
 		<%-- （以下、list.jspとだいたい同じ --%>
 		<%-- ソートボタン --%>
-		<form action="list" method="post"></form>
+		<form action="recommend" method="post"></form>
 			<tb>
 				<select name="sortname">
 					<option value="regist" selected="selected">登録順</option>
@@ -71,7 +67,7 @@ text-align:center;
 			<tr>
 				<td><img src="img/${book.img }" width="128" height="96"
 					alt="${book.title } "></td>
-				<form action="list" method="post">
+				<form action="recommend" method="post">
 					<td><input type="submit" value="${book.title }" /></td> <input
 						type="hidden" name="title" value="${book.id }">
 				</form>
@@ -80,7 +76,7 @@ text-align:center;
 				<td><c:out value="${book.twicount }" /></td>
 				<td><c:out value="${book.favcount }" /></td>
 				<td>
-					<form action="list" method="post">
+					<form action="recommend" method="post">
 						<c:choose>
 							<c:when test="${book.favorite == true}">
 								<input type="submit" value="★">
@@ -104,14 +100,14 @@ text-align:center;
 		<c:if test="${sessionScope.status.page > 1}">
 			<%--最初のページ --%>
 			<td>
-				<form action="list" method="post">
+				<form action="recommend" method="post">
 					<input type="submit" value="＜＜"> <input type="hidden"
 						name="button" value="top">
 				</form>
 			</td>
 			<%--1ページ前 --%>
 			<td>
-				<form action="list" method="post">
+				<form action="recommend" method="post">
 					<input type="submit" value="＜"> <input type="hidden"
 						name="button" value="back">
 				</form>
@@ -124,14 +120,14 @@ text-align:center;
 			test="${sessionScope.status.page < sessionScope.status.maxpage }">
 			<td>
 				<%--1ページ先 --%>
-				<form action="list" method="post">
+				<form action="recommend" method="post">
 					<input type="submit" value="＞"> <input type="hidden"
 						name="button" value="next">
 				</form>
 			</td>
 			<td>
 				<%--最後のページ --%>
-				<form action="list" method="post">
+				<form action="recommend" method="post">
 					<input type="submit" value="＞＞"> <input type="hidden"
 						name="button" value="last">
 				</form>
