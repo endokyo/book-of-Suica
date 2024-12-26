@@ -97,13 +97,6 @@ public class Personal extends HttpServlet {
 				request.setAttribute("userid", user.getId());
 				jsp = "/personal.jsp";
 			}
-			//評価編集の場合
-			else if (btn.equals("evalution")) {
-				request.setAttribute("button", "evaluation");
-				request.setAttribute("userid", user.getId());
-				request.setAttribute("who", "personal");
-				jsp = "/evaluation";
-			}
 			//エラー画面から戻ってきた場合
 			else if (btn.equals("error")) {
 				createPage(request, user);

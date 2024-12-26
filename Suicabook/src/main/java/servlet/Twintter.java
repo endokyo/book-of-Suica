@@ -45,7 +45,7 @@ public class Twintter extends HttpServlet {
 				e.printStackTrace();
 				request.setAttribute("errormessage", "エラーが発生しました");
 			}
-			
+
 		}
 		// JSP への転送
 		ServletContext context = getServletContext();
@@ -81,9 +81,9 @@ public class Twintter extends HttpServlet {
 						jsp = "/error.jsp";
 						request.setAttribute("returnjsp", "twintter");
 					}
-				} else if(button.equals("キャンセル")){
+				} else if (button.equals("キャンセル")) {
 					jsp = "/detail";
-				}else{
+				} else {
 					doGet(request, response);
 				}
 			} else {
@@ -99,12 +99,9 @@ public class Twintter extends HttpServlet {
 		}
 
 		// JSP への転送
-		if (jsp.equals("/detail.jsp")) {
-			response.sendRedirect("http://localhost:8080/Suicabook/detail"); //リダイレクトでdoGetを呼び出す
-		} else {
-			ServletContext context = request.getServletContext();
-			RequestDispatcher dispatcher = context.getRequestDispatcher(jsp);
-			dispatcher.forward(request, response);
-		}
+		ServletContext context = request.getServletContext();
+		RequestDispatcher dispatcher = context.getRequestDispatcher(jsp);
+		dispatcher.forward(request, response);
+
 	}
 }

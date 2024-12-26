@@ -88,7 +88,7 @@ public class Evaluation extends HttpServlet {
 						bean.setEvaluation_review(review);
 						UpdateEvaluation ue = new UpdateEvaluation();
 						ue.execute(bean);
-						if (userid != null) {
+						if (who.equals("personal")) {
 							//お気に入り書籍リスト作成
 							CreatePersonalFavorite favo = new CreatePersonalFavorite();
 							favo.execute(request, Integer.parseInt(userid));
@@ -98,7 +98,7 @@ public class Evaluation extends HttpServlet {
 							request.setAttribute("userid", Integer.parseInt(userid));
 							jsp = "/personal.jsp";
 						} else {
-							jsp = "/personal.jsp"; //←書籍詳細画面から評価入力(編集)した際の処理が不十分
+							jsp = "/detail"; //←書籍詳細画面から評価入力(編集)した際の処理が不十分
 						}
 					} else { //書籍詳細画面から初めて評価を入力する場合
 						UserBean user = (UserBean) se.getAttribute("user");

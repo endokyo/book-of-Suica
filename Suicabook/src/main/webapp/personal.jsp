@@ -55,12 +55,14 @@
 					<tr>
 						<td><img src="img/${eva.img }" width="128" height="96"
 							alt="${eva.title } "></td>
-						<td><a href="detail?id=${eva.id}"><c:out value="${eva.title}" /></td>
+						<td><a href="detail?id=${eva.id}"><c:out
+									value="${eva.title}" /></td>
 						<td><c:out value="${eva.evaluation_score }" /></td>
 						<c:if test="${requestScope.userid == sessionScope.user.id  }">
-							<td><form action="personal" method="post">
-									<input type="hidden" name="btn" value="evalution"> <input
-										type="hidden" name="bookid" value="${eva.id }"> <input
+							<td><form action="evaluation" method="POST">
+							<input type="hidden" name="who" value="personal"/>
+									<input type="hidden" name="button" value="evaluation" /> 
+									<input type="hidden" name="id" value="${eva.id }"> <input
 										type="submit" value="評価編集">
 								</form></td>
 						</c:if>
