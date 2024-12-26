@@ -37,6 +37,7 @@ text-align:center;
 		</p>
 		<p>
 			<form action="evaluation" method="POST">
+				<input type="hidden" name="who" value="detail"/>
 				<input type="submit" name="evaluation" value="評価/レビューを入力" />
 				<input type="hidden" name="button" value="evaluation" />
 				<input type="hidden" name="id" value="${requestScope.bookinfo.id}" />

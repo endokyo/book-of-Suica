@@ -38,8 +38,6 @@ public class List extends HttpServlet {
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		HttpSession session = request.getSession(false);
-		
-		CreateList createlist = new CreateList();
 		String jsp;
 //		user = new UserBean();
 //		user.setId(1);
@@ -63,7 +61,8 @@ public class List extends HttpServlet {
 		}else {
 			//書籍一覧を作成
 			try {
-				createlist.execute(request);
+				StatusBean sb = (StatusBean) session.getAttribute("status");
+				bookListCreate(request,sb);
 				request.setAttribute("message", "お気に入りの書籍を見つけよう！！");
 				jsp = "/list.jsp";
 			}catch (Exception e){

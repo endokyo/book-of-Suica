@@ -67,10 +67,7 @@ text-align:center;
 			<tr>
 				<td><img src="img/${book.img }" width="128" height="96"
 					alt="${book.title } "></td>
-				<form action="recommend" method="post">
-					<td><input type="submit" value="${book.title }" /></td> <input
-						type="hidden" name="title" value="${book.id }">
-				</form>
+				<td><a href="detail?id=${book.id}"><c:out value="${book.title}" /></td>
 				<td><c:out value="${book.avecount }" /></td>
 				<td><c:out value="${book.average }" /></td>
 				<td><c:out value="${book.twicount }" /></td>

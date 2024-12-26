@@ -41,11 +41,12 @@ text-align:center;
 				</p>
 			</div>
 		</form>
-		<form action="details" method="post">	
+		<form action="detail" method="post">	
 			<div class="input">
 				<p>
 					<input type="hidden" name="id" value="${requestScope.bookinfo.id }">
-					<input type="hidden" name="who" value="${requestScope.who }">	
+					<input type="hidden" name="userid" value="${requestScope.userid }">
+					<input type="hidden" name="mode" value="${requestScope.mode}">
 					<input type="submit" name="button" value="キャンセル">
 				</p>
 			</div>
