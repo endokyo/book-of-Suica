@@ -39,9 +39,9 @@ public class Recommendation extends HttpServlet {
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		HttpSession session = request.getSession(false);
-		UserBean user = (UserBean) session.getAttribute("user");
 		CreateRecommendList createrecommendlist = new CreateRecommendList();
 		String jsp;
+		
 //		user = new UserBean();
 //		user.setId(1);
 //		user.setName("user01");
@@ -59,7 +59,7 @@ public class Recommendation extends HttpServlet {
 		
 		
 		//ログインされてなければログインページに飛ぶ
-		if(user == null) {
+		if(session == null) {
 			jsp = "/login.jsp";
 		}else {
 			//書籍一覧を作成
@@ -97,6 +97,7 @@ public class Recommendation extends HttpServlet {
 		sb.setGenre(sb.getTodaygenre());
 		sb.setGenreid(sb.getTodaygenreid());
 		sb.setKeyword(" ");
+		sb.setPage(1);
 		
 		try {
 			bdao = new BookDao();
