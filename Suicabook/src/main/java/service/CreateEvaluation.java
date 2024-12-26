@@ -16,7 +16,7 @@ public class CreateEvaluation {
 			int id = Integer.parseInt(request.getParameter("id"));
 			List<EvaluationBean> evaluationlist = new ArrayList<>();
 			
-			evaluationlist = dao.getEvaluationListSortByUser(id);
+			evaluationlist = dao.getEvaluationListSortByBook(id);
 			request.setAttribute("evaluationlist", evaluationlist);
 			request.setAttribute("mode", 2);
 

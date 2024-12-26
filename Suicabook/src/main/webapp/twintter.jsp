@@ -32,7 +32,7 @@ text-align:center;
 				<p>
 					*文字数上限は100文字です<br>
 					コメント：<br>
-					<textarea name="twintter_text"　placeholder="コメント" rows="5" cols="30"></textarea>
+					<textarea name="twintter_text" placeholder="コメント" rows="5" cols="30"></textarea>
 				</p>
 				<p>
 					<input type="hidden" name="id" value="${requestScope.bookinfo.id }">

@@ -14,7 +14,12 @@ public class GetEvaluationData {
 			dao = new EvaluationDao();
 			//特定の書籍の評価を取得する
 			bean = dao.searchEvaluation(user_id, book_id);
-			request.setAttribute("evaluationdetails", bean);
+			if(bean.getId() == 0) {
+				request.setAttribute("mode", 1);
+			}else {
+				request.setAttribute("evaluationdetails", bean);
+				request.setAttribute("mode", 2);
+			}
 
 		} finally {
 			if (dao != null) {

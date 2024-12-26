@@ -11,7 +11,9 @@
 	<header>
 		<p><jsp:include page="header.jsp" /></p>
 		<p>
-			<h1><c:out value="${requestScope.username }" /></h1>
+		<h1>
+			<c:out value="${requestScope.username }" />
+		</h1>
 		</p>
 	</header>
 	<main>
@@ -26,15 +28,14 @@
 					<tr>
 						<td><img src="img/${book.img }" width="128" height="96"
 							alt="${book.title } "></td>
-						<form action="personal" method="post">
-							<input type="hidden" name="btn" value="title">
-							<td><input type="submit" value="${book.title }"></td>
-						</form>
+						<input type="hidden" name="btn" value="title">
+						<td><a href="detail?id=${book.id}"><c:out
+									value="${book.title}" /></td>
 						<c:if test="${requestScope.userid == sessionScope.user.id  }">
 							<td><form action="personal" method="post">
-									<input type="hidden" name="btn" value="cancel">
-									<input type="hidden" name="favorite_id" value="${book.favorite_id }">
-									 <input type="submit" value="登録解除">
+									<input type="hidden" name="btn" value="cancel"> <input
+										type="hidden" name="favorite_id" value="${book.favorite_id }">
+									<input type="submit" value="登録解除">
 								</form></td>
 						</c:if>
 						<c:if test="${requestScope.userid != sessionScope.user.id  }">
@@ -54,16 +55,13 @@
 					<tr>
 						<td><img src="img/${eva.img }" width="128" height="96"
 							alt="${eva.title } "></td>
-						<form action="personal" method="post">
-							<input type="hidden" name="btn" value="title">
-							<td><input type="submit" value="${eva.title }"></td>
-						</form>
+						<td><a href="detail?id=${eva.id}"><c:out value="${eva.title}" /></td>
 						<td><c:out value="${eva.evaluation_score }" /></td>
 						<c:if test="${requestScope.userid == sessionScope.user.id  }">
 							<td><form action="personal" method="post">
-									<input type="hidden" name="btn" value="evalution"> 
-									<input type="hidden" name="bookid" value="${eva.id }"> 
-									<input type="submit" value="評価編集">
+									<input type="hidden" name="btn" value="evalution"> <input
+										type="hidden" name="bookid" value="${eva.id }"> <input
+										type="submit" value="評価編集">
 								</form></td>
 						</c:if>
 						<c:if test="${requestScope.userid != sessionScope.user.id  }">

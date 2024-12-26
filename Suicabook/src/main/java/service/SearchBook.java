@@ -8,7 +8,6 @@ import dao.BookDao;
 public class SearchBook {
 	public void execute(HttpServletRequest request, int user_id) throws Exception {
 		BookDao dao = null;
-		BookBean bean;
 		int id = Integer.parseInt(request.getParameter("id"));	// 単なる"id"はbook_idのこと
 		
 		try {

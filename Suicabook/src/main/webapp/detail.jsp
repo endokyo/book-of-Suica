@@ -71,9 +71,9 @@ text-align:center;
 							<th>コメント</th>
 							<th>投稿日時</th>
 						</tr>
-						<c:forEach var="twintterinfo" items="${requestScope.twintterlist }">
+						<c:forEach var="twintterinfo" items="${requestScope.twintterlist }" varStatus="status">
 							<tr>
-								<td><c:out value="${twintterinfo.twintter_no}" /></td>
+								<td>No.<c:out value="${status.index+1}" /></td>
 								<td>
 									<a href = "/personal?user_name=${twintterinfo.user_name }">
 										<c:out value="${twintterinfo.user_name }" />							

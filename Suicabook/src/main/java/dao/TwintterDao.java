@@ -55,6 +55,7 @@ public class TwintterDao {
 				twintter.setTwintter_text(rs.getString("twintter_text"));
 				twintter.setBook_id(rs.getInt("book_id"));
 				twintter.setUser_name(rs.getString("user_name"));
+				twintter.setCreated_at(rs.getDate("created_at"));
 				list.add(twintter);
 			}
 		}finally {

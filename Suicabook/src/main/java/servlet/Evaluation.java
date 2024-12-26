@@ -11,12 +11,13 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
-import bean.BookBean;
 import bean.EvaluationBean;
 import bean.UserBean;
 import service.AddEvaluation;
 import service.CreatePersonalEvaluation;
 import service.CreatePersonalFavorite;
+import service.GetEvaluationData;
+import service.SearchBook;
 import service.UpdateEvaluation;
 
 /**
@@ -31,13 +32,26 @@ public class Evaluation extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		HttpSession session = request.getSession(true);
-		UserBean user = (UserBean) session.getAttribute("user");
+		HttpSession session = request.getSession(false);
 		String jsp;
 		// TODO Auto-generated method stub
-		if (user == null) {
+		if (session == null) {
 			jsp = "/login.jsp";
 		} else {
+			UserBean user = (UserBean) session.getAttribute("user");
+			GetEvaluationData eva = new GetEvaluationData();
+			String bookid = request.getParameter("id");
+			int id = Integer.parseInt(bookid);
+			try {
+				eva.execute(request, user.getId(), id);
+				SearchBook search = new SearchBook();
+				search.execute(request, id);
+			} catch (Exception e) {
+				// TODO 自動生成された catch ブロック
+				e.printStackTrace();
+			}
+			request.setAttribute("userid", user.getId());
+			request.setAttribute("who", "detail");
 			jsp = "/evaluation.jsp";
 		}
 		// JSP への転送
@@ -87,16 +101,17 @@ public class Evaluation extends HttpServlet {
 						}
 					} else { //書籍詳細画面から初めて評価を入力する場合
 						UserBean user = (UserBean) se.getAttribute("user");
-						BookBean book = (BookBean) se.getAttribute("book");
-						EvaluationBean eb = (EvaluationBean) request.getAttribute("evaluationdetails");
+						String id = request.getParameter("id");
+						String score = request.getParameter("evaluation_score");
+						String review = request.getParameter("evaluation_review");
 						EvaluationBean bean = new EvaluationBean();
 						bean.setUser_id(user.getId());
-						bean.setBook_id(book.getId());
-						bean.setEvaluation_score(eb.getEvaluation_score());
-						bean.setEvaluation_review(eb.getEvaluation_review());
+						bean.setBook_id(Integer.parseInt(id));
+						bean.setEvaluation_score(Integer.parseInt(score));
+						bean.setEvaluation_review(review);
 						AddEvaluation ae = new AddEvaluation();
 						ae.execute(bean);
-						jsp = "/detail.jsp";
+						jsp = "/detail";
 					}
 
 				} else if (button.equals("キャンセル")) {
@@ -110,12 +125,10 @@ public class Evaluation extends HttpServlet {
 						request.setAttribute("userid", Integer.parseInt(userid));
 						jsp = "/personal.jsp";
 					} else {
-						jsp = "/detail.jsp";
+						jsp = "/detail";
 					}
 				} else {
-					request.setAttribute("errormessage", "ボタンが押されませんでした。");
-					jsp = "/error.jsp";
-					request.setAttribute("returnjsp", "evaluation");
+					doGet(request, response);
 				}
 			} else if (button.equals("error")) {
 				jsp = "/evaluation.jsp";

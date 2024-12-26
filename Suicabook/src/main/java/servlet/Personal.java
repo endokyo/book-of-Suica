@@ -12,6 +12,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 import bean.UserBean;
+import dao.UserDao;
 import service.CreatePersonalEvaluation;
 import service.CreatePersonalFavorite;
 import service.DeleteFavorite;
@@ -31,31 +32,42 @@ public class Personal extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		HttpSession session = request.getSession(false);
-		UserBean user = (UserBean) session.getAttribute("user");
 		String jsp;
 		//ログインができるまで
-//		user = new UserBean();
-//		user.setId(1);
-//		user.setName("user01");
-//		user.setPassword("pass01");
-//
-//		session.setAttribute("user", user);
+		//		user = new UserBean();
+		//		user.setId(1);
+		//		user.setName("user01");
+		//		user.setPassword("pass01");
+		//
+		//		session.setAttribute("user", user);
 		//ログインされてなければログインページに飛ぶ
-		if (user == null) {
+		if (session == null) {
 			jsp = "/login.jsp";
 		} else {
-
+			UserDao dao = null;
 			try {
 				//お気に入り一覧と評価した書籍一覧を作成
+				UserBean user = null;
+				String username = request.getParameter("user_name");
+				if (username != null && !username.isEmpty()) {
+					dao = new UserDao();
+					user = dao.getUser(username);
+				}else {
+					user = (UserBean) session.getAttribute("user");
+				}
 				createPage(request, user);
 				request.setAttribute("username", user.getName());
-				request.setAttribute("userid", 1);
+				request.setAttribute("userid", user.getId());
 				jsp = "/personal.jsp";
 			} catch (Exception e) {
 				e.printStackTrace();
 				request.setAttribute("returnjsp", "personal");
 				request.setAttribute("errormessage", "エラーが発生しました");
 				jsp = "/error.jsp";
+			} finally {
+				if (dao != null) {
+					dao.close();
+				}
 			}
 		}
 
@@ -71,21 +83,13 @@ public class Personal extends HttpServlet {
 			throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
 		String btn = request.getParameter("btn");
-		String jsp;
+		String jsp = "/error.jsp";
 		HttpSession session = request.getSession(false);
 		UserBean user = (UserBean) session.getAttribute("user");
 
 		try {
-			//ボタンがタイトルの場合
-			if (btn.equals("title")) {
-//				CreateTwintter twintter = new CreateTwintter();
-//				twintter.execute(request);
-//				SearchBook search = new SearchBook();
-//				search.execute(request, user.getId());
-				jsp = "/details.jsp";
-			}
 			//お気に入り解除の場合
-			else if (btn.equals("cancel")) {
+			if (btn.equals("cancel")) {
 				//お気に入りの解除を行う
 				DeleteFavorite delete = new DeleteFavorite();
 				delete.execute(request);
@@ -100,12 +104,11 @@ public class Personal extends HttpServlet {
 				GetEvaluationData eva = new GetEvaluationData();
 				String bookid = request.getParameter("bookid");
 				int id = Integer.parseInt(bookid);
-				eva.execute(request, user.getId(),id);
+				eva.execute(request, user.getId(), id);
 				SearchBook search = new SearchBook();
 				search.execute(request, id);
 				request.setAttribute("userid", 1);
 				request.setAttribute("who", "personal");
-				request.setAttribute("mode", 2);
 				jsp = "/evaluation.jsp";
 			}
 			//エラー画面から戻ってきた場合
@@ -114,16 +117,13 @@ public class Personal extends HttpServlet {
 				jsp = "/personal.jsp";
 			} //ボタンが選択されていなかった場合
 			else {
-				request.setAttribute("errormessage", "エラーが発生しました<br>戻るボタンを押下してください");
-				request.setAttribute("back", "personal");
-				jsp = "/error.jsp";
+				doGet(request, response);
 			}
 		} catch (Exception e) {
 			request.setAttribute("errormessage", "エラーが発生しました<br>戻るボタンを押下してください");
 			request.setAttribute("back", "personal");
-			jsp = "/error.jsp";
 		}
-		
+
 		ServletContext context = getServletContext();
 		RequestDispatcher rd = context.getRequestDispatcher(jsp);
 		rd.forward(request, response);

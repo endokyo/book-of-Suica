@@ -11,10 +11,10 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
-import bean.BookBean;
 import bean.TwintterBean;
 import bean.UserBean;
 import service.AddTwintter;
+import service.SearchBook;
 
 /**
  * Servlet implementation class TaskEdit
@@ -28,14 +28,24 @@ public class Twintter extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		HttpSession session = request.getSession(true);
-		UserBean user = (UserBean) session.getAttribute("user");
-		String jsp;
+		HttpSession session = request.getSession(false);
+		String jsp = "/error.jsp";
 		// TODO Auto-generated method stub
-		if (user == null) {
+		if (session == null) {
 			jsp = "/login.jsp";
 		} else {
-			jsp = "/twintter.jsp";
+			UserBean user = (UserBean) session.getAttribute("user");
+			request.setAttribute("who", user.getId());
+			SearchBook search = new SearchBook();
+			try {
+				search.execute(request, user.getId());
+				jsp = "/twintter.jsp";
+			} catch (Exception e) {
+				// TODO 自動生成された catch ブロック
+				e.printStackTrace();
+				request.setAttribute("errormessage", "エラーが発生しました");
+			}
+			
 		}
 		// JSP への転送
 		ServletContext context = getServletContext();
@@ -52,30 +62,29 @@ public class Twintter extends HttpServlet {
 		String jsp = null;
 		String content = request.getParameter("twintter_text");
 		String button = request.getParameter("button");
+		String id = request.getParameter("id");
+		String who = request.getParameter("who");
 
 		try {
 			if (button != null && !button.isEmpty()) {
 				if (button.equals("投稿")) {
 					if (content.length() <= 100) {
-						HttpSession se = request.getSession(false);
-						UserBean user = (UserBean) se.getAttribute("user");
-						BookBean book = (BookBean) se.getAttribute("book");
 						TwintterBean bean = new TwintterBean();
-						bean.setUser_id(user.getId());
-						bean.setBook_id(book.getId());
-						bean.setTwintter_text(request.getParameter("twintter_text"));
+						bean.setUser_id(Integer.parseInt(who));
+						bean.setBook_id(Integer.parseInt(id));
+						bean.setTwintter_text(content);
 						AddTwintter at = new AddTwintter();
 						at.execute(bean);
-						jsp = "/detail.jsp";
+						jsp = "/detail";
 					} else {
 						request.setAttribute("errormessage", "コメントが100文字を超過しています。");
 						jsp = "/error.jsp";
 						request.setAttribute("returnjsp", "twintter");
 					}
-				} else {
-					request.setAttribute("errormessage", "ボタンが押されませんでした。");
-					jsp = "/error.jsp";
-					request.setAttribute("returnjsp", "twintter");
+				} else if(button.equals("キャンセル")){
+					jsp = "/detail";
+				}else{
+					doGet(request, response);
 				}
 			} else {
 				request.setAttribute("errormessage", "エラーが発生しました。ボタンの入力が確認できませんでした。");

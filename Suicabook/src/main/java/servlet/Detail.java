@@ -30,7 +30,7 @@ public class Detail extends HttpServlet {
 		int user_id = userbean.getId();
 
 		// 他画面からアクセスしたときのユーザーIDを取得する
-		int who = Integer.parseInt(request.getParameter("who"));
+		//int who = Integer.parseInt(request.getParameter("who"));
 
 		// 書籍情報を取得する
 		try {
@@ -42,7 +42,16 @@ public class Detail extends HttpServlet {
 
 		// モードにより表示を分ける
 		try {
-			int mode = Integer.parseInt(request.getParameter("mode"));
+			String strmode = request.getParameter("mode");
+			System.out.println(strmode);
+			if(strmode == null) {
+				strmode = "1";
+			}
+			int mode = Integer.parseInt(strmode);
+			System.out.println(mode);
+			if(mode <= 0) {
+				mode = 1;
+			}
 			if (mode == 1) {
 				// コメント一覧を取得する
 				CreateTwintter createtwintter = new CreateTwintter();
@@ -57,7 +66,7 @@ public class Detail extends HttpServlet {
 		}
 
 		// リクエスト処理
-		request.setAttribute("who", who); // ユーザーID
+		//request.setAttribute("who", who); // ユーザーID
 
 		// 転送処理
 		ServletContext context = getServletContext();
