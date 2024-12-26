@@ -38,7 +38,6 @@ public class List extends HttpServlet {
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		HttpSession session = request.getSession(false);
-		UserBean user = (UserBean) session.getAttribute("user");
 		String jsp;
 //		user = new UserBean();
 //		user.setId(1);
@@ -57,7 +56,7 @@ public class List extends HttpServlet {
 		
 		
 		//ログインされてなければログインページに飛ぶ
-		if(user == null) {
+		if(session == null) {
 			jsp = "/login.jsp";
 		}else {
 			//書籍一覧を作成
