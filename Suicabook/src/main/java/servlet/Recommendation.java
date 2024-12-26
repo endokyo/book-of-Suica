@@ -20,6 +20,7 @@ import service.AddFavorite;
 import service.CreateAverage;
 import service.CreateFavoriteCount;
 import service.CreateList;
+import service.CreateRecommendList;
 import service.CreateTwintterCount;
 import service.DeleteFavorite;
 
@@ -39,7 +40,7 @@ public class Recommendation extends HttpServlet {
 		// TODO Auto-generated method stub
 		HttpSession session = request.getSession(false);
 		UserBean user = (UserBean) session.getAttribute("user");
-		CreateList createlist = new CreateList();
+		CreateRecommendList createrecommendlist = new CreateRecommendList();
 		String jsp;
 //		user = new UserBean();
 //		user.setId(1);
@@ -63,9 +64,9 @@ public class Recommendation extends HttpServlet {
 		}else {
 			//書籍一覧を作成
 			try {
-				createlist.execute(request);
-				request.setAttribute("message", "お気に入りの書籍を見つけよう！！");
-				jsp = "/list.jsp";
+				createrecommendlist.execute(request);
+				request.setAttribute("message", "お気に入りを探しに行こう！！");
+				jsp = "/recommendation.jsp";
 			}catch (Exception e){
 				e.printStackTrace();
 				request.setAttribute("errormessage", "ログイン画面に戻って下さい");	//エラーメッセージ入れる
@@ -92,6 +93,10 @@ public class Recommendation extends HttpServlet {
 		//String keyword = (String)request.getAttribute("keyword");
 		String jsp = "error.jsp";
 		
+		//本日のおすすめをジャンルに設定
+		sb.setGenre(sb.getTodaygenre());
+		sb.setGenreid(sb.getTodaygenreid());
+		sb.setKeyword(" ");
 		
 		try {
 			bdao = new BookDao();
@@ -108,9 +113,9 @@ public class Recommendation extends HttpServlet {
 				}
 				sb.setPage(1);
 				bookListCreate(request,sb);
-				request.setAttribute("message", "お気に入りの書籍を見つけよう！！");
+				request.setAttribute("message", "お気に入りを探しに行こう！！");
 				session.setAttribute("status", sb);
-				jsp = "/recommend.jsp";
+				jsp = "/recommendation.jsp";
 				
 			}else if(button != null) {
 				//お気に入り登録ボタン
@@ -126,7 +131,7 @@ public class Recommendation extends HttpServlet {
 					af.execute(fb);
 				//検索クリアボタン
 				}else if(button.equals("clear")){
-					sb.setGenreid(0);
+					sb.setGenreid(sb.getTodaygenreid());
 					sb.setKeyword(" ");
 					sb.setPage(1);
 					sb.setNowsort("登録");
@@ -155,7 +160,7 @@ public class Recommendation extends HttpServlet {
 					session.setAttribute("status", sb);
 				}
 				bookListCreate(request,sb);
-				jsp = "/recommend.jsp";
+				jsp = "/recommendation.jsp";
 			//タイトル押下時の処理
 			}else if(title != null) {
 //				CreateTwintter twintter = new CreateTwintter();
