@@ -50,8 +50,9 @@ public class Evaluation extends HttpServlet {
 				// TODO 自動生成された catch ブロック
 				e.printStackTrace();
 			}
+			String who = request.getParameter("who");
 			request.setAttribute("userid", user.getId());
-			request.setAttribute("who", "detail");
+			request.setAttribute("who", who);
 			jsp = "/evaluation.jsp";
 		}
 		// JSP への転送

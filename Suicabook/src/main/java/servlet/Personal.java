@@ -16,8 +16,6 @@ import dao.UserDao;
 import service.CreatePersonalEvaluation;
 import service.CreatePersonalFavorite;
 import service.DeleteFavorite;
-import service.GetEvaluationData;
-import service.SearchBook;
 
 /**
  * Servlet implementation class Personal
@@ -101,15 +99,10 @@ public class Personal extends HttpServlet {
 			}
 			//評価編集の場合
 			else if (btn.equals("evalution")) {
-				GetEvaluationData eva = new GetEvaluationData();
-				String bookid = request.getParameter("bookid");
-				int id = Integer.parseInt(bookid);
-				eva.execute(request, user.getId(), id);
-				SearchBook search = new SearchBook();
-				search.execute(request, id);
-				request.setAttribute("userid", 1);
+				request.setAttribute("button", "evaluation");
+				request.setAttribute("userid", user.getId());
 				request.setAttribute("who", "personal");
-				jsp = "/evaluation.jsp";
+				jsp = "/evaluation";
 			}
 			//エラー画面から戻ってきた場合
 			else if (btn.equals("error")) {

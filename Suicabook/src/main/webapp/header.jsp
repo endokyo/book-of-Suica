@@ -22,7 +22,7 @@
 
 				<td>
 					<form action="personal" method="get">
-						<input type="submit" value="プロフィールボタン">
+						<input type="submit" value="プロフィール">
 					</form>
 				</td>
 
